@@ -175,15 +175,7 @@ example {t : ℝ} (ht : t ^ 3 = t ^ 2) : t = 1 ∨ t = 0 := by
   left
   addarith [h21]
   right
-  have h3 :=
-  calc
-    t * t
-      = t ^ 2 := by ring
-    _ = 0 := by rw [h22]
-  have h4:= by apply eq_zero_or_eq_zero_of_mul_eq_zero h3
-  obtain h41 | h42 := h4
-  addarith [h41]
-  addarith [h42]
+  cancel 2 at h22
 
 example {n : ℕ} : n ^ 2 ≠ 7 := by
   have hn := le_or_succ_le n 2
