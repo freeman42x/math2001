@@ -193,4 +193,15 @@ example {n : ℤ} : ∃ a, 2 * a ^ 3 ≥ n * a + 7 := by
 
 example {a b c : ℝ} (ha : a ≤ b + c) (hb : b ≤ a + c) (hc : c ≤ a + b) :
     ∃ x y z, x ≥ 0 ∧ y ≥ 0 ∧ z ≥ 0 ∧ a = y + z ∧ b = x + z ∧ c = x + y := by
-  sorry
+  use (b + c - a) / 2, (a + c - b) / 2, (a + b - c) / 2
+  constructor
+  addarith [ha]
+  constructor
+  addarith [hb]
+  constructor
+  addarith [hc]
+  constructor
+  ring
+  constructor
+  ring
+  ring
