@@ -77,20 +77,61 @@ example : ∃ a b c d : ℕ,
 
 
 example : ∃ t : ℚ, t ^ 2 = 1.69 := by
-  sorry
+  use 1.3
+  numbers
+
 example : ∃ m n : ℤ, m ^ 2 + n ^ 2 = 85 := by
-  sorry
+  use 6
+  use 7
+  numbers
 
 example : ∃ x : ℝ, x < 0 ∧ x ^ 2 < 1 := by
-  sorry
+  use -0.5
+  constructor
+  numbers
+  numbers
+
 example : ∃ a b : ℕ, 2 ^ a = 5 * b + 1 := by
-  sorry
+  use 4
+  use 3
+  numbers
 
 example (x : ℚ) : ∃ y : ℚ, y ^ 2 > x := by
-  sorry
+  use x / 2 + 1
+  calc
+    (x / 2 + 1) ^ 2
+      = x ^ 2 / 4 + x + 1 := by ring
+    _ ≥ x + 1 := by extra
+    _ > x := by extra
 
 example {t : ℝ} (h : ∃ a : ℝ, a * t + 1 < a + t) : t ≠ 1 := by
-  sorry
+  obtain ⟨a, hxt⟩ := h
+  have H := le_or_gt a 1
+  have hxt' : (a - 1) * (t - 1) < 0 := by
+    calc
+      (a - 1) * (t - 1) = a * t - a - t + 1 := by ring
+                     _ < 0 := by addarith [hxt]
+  have hxt'' : -(a - 1) * (t - 1) > 0 := by addarith [hxt']
+  have hxt''' : (a - 1) * -(t - 1) > 0 := by
+    calc
+       (a - 1) * -(t - 1) = -(a - 1) * (t - 1) := by ring
+                      _ > 0 := by addarith [hxt'']
+
+  obtain ha1 | ha2 := H
+  · apply ne_of_gt
+    have ha' : - (a - 1) ≥ 0 := by addarith [ha1]
+    cancel -(a- 1) at hxt''
+    calc
+      t = 1 + (t - 1) := by ring
+      _ > 1 := by addarith [hxt'']
+
+  · apply ne_of_lt
+    have ha' : (a - 1) > 0 := by addarith [ha2]
+    cancel (a - 1) at hxt'''
+    have hxt'''' : t - 1 < 0 := by addarith [hxt''']
+    calc
+      t = 1 + (t - 1) := by ring
+      _ < 1 := by addarith [hxt'''']
 
 example {m : ℤ} (h : ∃ a, 2 * a = m) : m ≠ 5 := by
   sorry
