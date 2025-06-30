@@ -192,9 +192,27 @@ example {x y : ℤ} (hx : Odd x) (hy : Odd y) : Odd (x * y) := by
     _ = 2 * (2 * s * t + s + t) + 1 := by ring
 
 example (n : ℤ) : Odd (3 * n ^ 2 + 3 * n - 1) := by
-  sorry
+  obtain hn | hn := Int.even_or_odd n
+  dsimp [Odd, Even] at *
+  obtain ⟨k, hk⟩ := hn
+  use 6 * k ^ 2 + 3 * k - 1
+  calc
+    3 * n ^ 2 + 3 * n - 1
+      = 3 * (2 * k) ^ 2 + 3 * (2 * k) - 1 := by rw [hk]
+    _ = 12 * k ^ 2 + 6 * k - 1 := by ring
+    _ = 2 * (6 * k ^ 2 + 3 * k - 1) + 1 := by ring
+  dsimp [Odd, Even] at *
+  obtain ⟨k, hk⟩ := hn
+  use 6 * k ^ 2 + 9 * k + 2
+  calc
+    3 * n ^ 2 + 3 * n - 1
+      = 3 * (2 * k + 1) ^ 2 + 3 * (2 * k + 1) - 1 := by rw [hk]
+    _ = 12 * k ^ 2 + 12 * k + 3 + 6 * k + 3 - 1 := by ring
+    _ = 12 * k ^ 2 + 18 * k + 5 := by ring
+    _ = 2 * (6 * k ^ 2 + 9 * k + 2) + 1 := by ring
 
 example (n : ℤ) : ∃ m ≥ n, Odd m := by
   sorry
+
 example (a b c : ℤ) : Even (a - b) ∨ Even (a + c) ∨ Even (b - c) := by
   sorry
