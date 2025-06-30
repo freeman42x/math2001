@@ -85,13 +85,23 @@ example (n : ℤ) : Even (n ^ 2 + n + 4) := by
 
 
 example : Odd (-9 : ℤ) := by
-  sorry
+  dsimp [Odd]
+  use -5
+  numbers
 
 example : Even (26 : ℤ) := by
-  sorry
+  dsimp [Even]
+  use 13
+  numbers
 
 example {m n : ℤ} (hm : Odd m) (hn : Even n) : Odd (n + m) := by
-  sorry
+  dsimp [Odd, Even] at *
+  obtain ⟨s, hs⟩ := hm
+  obtain ⟨t, ht⟩ := hn
+  use s + t
+  calc
+    n + m = 2 * t + (2 * s  + 1) := by rw [hs, ht]
+    _ = 2 * (s + t) + 1 := by ring
 
 example {p q : ℤ} (hp : Odd p) (hq : Even q) : Odd (p - q - 4) := by
   sorry
