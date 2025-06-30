@@ -235,4 +235,53 @@ example (n : ℤ) : ∃ m ≥ n, Odd m := by
     n = 2 * s + 1 := by rw [hs]
 
 example (a b c : ℤ) : Even (a - b) ∨ Even (a + c) ∨ Even (b - c) := by
-  sorry
+  obtain ha := Int.even_or_odd a
+  obtain hb := Int.even_or_odd b
+  obtain hc := Int.even_or_odd c
+  obtain ha1 | ha2 := ha
+  · obtain hb1 | hb2 := hb
+    · left
+      obtain ⟨s, hs⟩ := ha1
+      obtain ⟨t, ht⟩ := hb1
+      use s - t
+      calc
+        a - b = 2 * s - (2 * t) := by rw [hs, ht]
+        _ = 2 * (s - t) := by ring
+    · obtain hc1 | hc2 := hc
+      · right; left
+        obtain ⟨s, hs⟩ := ha1
+        obtain ⟨u, hu⟩ := hc1
+        use s + u
+        calc
+          a + c = 2 * s + 2 * u := by rw [hs, hu]
+          _ = 2 * (s + u) := by ring
+      · right; right
+        obtain ⟨t, ht⟩ := hb2
+        obtain ⟨u, hu⟩ := hc2
+        use t - u
+        calc
+          b - c = (2 * t + 1) - (2 * u + 1) := by rw [ht, hu]
+          _ = 2 * (t - u) := by ring
+  · obtain hb1 | hb2 := hb
+    · obtain hc1 | hc2 := hc
+      · right; right
+        obtain ⟨t, ht⟩ := hb1
+        obtain ⟨u, hu⟩ := hc1
+        use t - u
+        calc
+          b - c = 2 * t - 2 * u := by rw [ht, hu]
+          _ = 2 * (t - u) := by ring
+      · right; left
+        obtain ⟨s, hs⟩ := ha2
+        obtain ⟨u, hu⟩ := hc2
+        use s + u + 1
+        calc
+          a + c = (2 * s + 1) + (2 * u + 1) := by rw [hs, hu]
+          _ = 2 * (s + u + 1) := by ring
+    · left
+      obtain ⟨s, hs⟩ := ha2
+      obtain ⟨t, ht⟩ := hb2
+      use s - t
+      calc
+        a - b = (2 * s + 1) - (2 * t + 1) := by rw [hs, ht]
+        _ = 2 * (s - t) := by ring
