@@ -125,10 +125,27 @@ example {a b : ℤ} (ha : Even a) (hb : Odd b) : Even (3 * a + b - 3) := by
     _ = 2 * (3 * s + t - 1) := by ring
 
 example {r s : ℤ} (hr : Odd r) (hs : Odd s) : Even (3 * r - 5 * s) := by
-  sorry
+  dsimp [Odd, Even] at *
+  obtain ⟨a, ha⟩ := hr
+  obtain ⟨b, hb⟩ := hs
+  use 3 * a - 5 * b - 1
+  calc
+    3 * r - 5 * s
+      = 3 * (2 * a + 1) - 5 * (2 * b + 1) := by rw [ha, hb]
+    _ = 6 * a + 3 - 10 * b - 5 := by ring
+    _ = 2 * (3 * a - 5 * b - 1) := by ring
 
 example {x : ℤ} (hx : Odd x) : Odd (x ^ 3) := by
-  sorry
+  dsimp [Odd] at *
+  obtain ⟨a, ha⟩ := hx
+  use 4 * a ^ 3 + 6 * a ^ 2 + 3 * a
+  calc
+    x ^ 3
+      = (2 * a + 1) ^ 3 := by rw [ha]
+    _ = (4 * a ^ 2 + 4 * a + 1) * (2 * a + 1) := by ring
+    _ = 8 * a ^ 3 + 8 * a ^ 2 + 2 * a + 4 * a ^ 2 + 4 * a + 1 := by ring
+    _ = 8 * a ^ 3 + 12 * a ^ 2 + 6 * a + 1 := by ring
+    _ = 2 * (4 * a ^ 3 + 6 * a ^ 2 + 3 * a) + 1 := by ring
 
 example {n : ℤ} (hn : Odd n) : Even (n ^ 2 - 3 * n + 2) := by
   sorry
