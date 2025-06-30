@@ -148,10 +148,26 @@ example {x : ℤ} (hx : Odd x) : Odd (x ^ 3) := by
     _ = 2 * (4 * a ^ 3 + 6 * a ^ 2 + 3 * a) + 1 := by ring
 
 example {n : ℤ} (hn : Odd n) : Even (n ^ 2 - 3 * n + 2) := by
-  sorry
+  dsimp [Odd, Even] at *
+  obtain ⟨a, ha⟩ := hn
+  use 2 * a ^ 2 - a
+  calc
+    n ^ 2 - 3 * n + 2
+      = (2 * a + 1) ^ 2 - 3 * (2 * a + 1) + 2 := by rw [ha]
+    _ = 4 * a ^ 2 + 4 * a + 1 - 6 * a - 3 + 2 := by ring
+    _ = 4 * a ^ 2 - 2 * a := by ring
+    _ = 2 * (2 * a ^ 2 - a) := by ring
 
 example {a : ℤ} (ha : Odd a) : Odd (a ^ 2 + 2 * a - 4) := by
-  sorry
+  dsimp [Odd] at *
+  obtain ⟨s, hs⟩ := ha
+  use 2 * s ^ 2 + 4 * s - 1
+  calc
+    a ^ 2 + 2 * a - 4
+      = (2 * s + 1) ^ 2 + 2 * (2 * s + 1) - 4 := by rw [hs]
+    _ = 4 * s ^ 2 + 4 * s + 1 + 4 * s + 2 - 4 := by ring
+    _ = 4 * s ^ 2 + 8 * s - 1 := by ring
+    _ = 2 * (2 * s ^ 2 + 4 * s - 1) + 1 := by ring
 
 example {p : ℤ} (hp : Odd p) : Odd (p ^ 2 + 3 * p - 5) := by
   sorry
