@@ -212,7 +212,27 @@ example (n : ℤ) : Odd (3 * n ^ 2 + 3 * n - 1) := by
     _ = 2 * (6 * k ^ 2 + 9 * k + 2) + 1 := by ring
 
 example (n : ℤ) : ∃ m ≥ n, Odd m := by
-  sorry
+  dsimp [Odd] at *
+  obtain hn := Int.even_or_odd n
+  obtain hn1 | hn2 := hn
+  dsimp [Even] at *
+  use n + 1
+  constructor
+  extra
+  obtain ⟨s, hs⟩ := hn1
+  use s
+  calc
+    n + 1
+      = 2 * s + 1 := by rw [hs]
+    _ = 2 * s + 1 := by ring
+  use n
+  constructor
+  extra
+  dsimp [Odd] at *
+  obtain ⟨s, hs⟩ := hn2
+  use s
+  calc
+    n = 2 * s + 1 := by rw [hs]
 
 example (a b c : ℤ) : Even (a - b) ∨ Even (a + c) ∨ Even (b - c) := by
   sorry
