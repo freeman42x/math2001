@@ -104,10 +104,25 @@ example {m n : ℤ} (hm : Odd m) (hn : Even n) : Odd (n + m) := by
     _ = 2 * (s + t) + 1 := by ring
 
 example {p q : ℤ} (hp : Odd p) (hq : Even q) : Odd (p - q - 4) := by
-  sorry
+  dsimp [Odd, Even] at *
+  obtain ⟨s, hs⟩ := hp
+  obtain ⟨t, ht⟩ := hq
+  use s - t - 2
+  calc
+    p - q - 4
+      = 2 * s + 1 - 2 * t - 4 := by rw [hs, ht]
+    _ = 2 * (s - t - 2) + 1 := by ring
 
 example {a b : ℤ} (ha : Even a) (hb : Odd b) : Even (3 * a + b - 3) := by
-  sorry
+  dsimp [Odd, Even] at *
+  obtain ⟨s, hs⟩ := ha
+  obtain ⟨t, ht⟩ := hb
+  use 3 * s + t - 1
+  calc
+    3 * a + b - 3
+      = 3 * (2 * s) + (2 * t + 1) - 3 := by rw [hs, ht]
+    _ = 6 * s + 2 * t - 2 := by ring
+    _ = 2 * (3 * s + t - 1) := by ring
 
 example {r s : ℤ} (hr : Odd r) (hs : Odd s) : Even (3 * r - 5 * s) := by
   sorry
