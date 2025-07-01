@@ -76,13 +76,27 @@ example {a b : ℕ} (hab : a ∣ b) (hb : 0 < b) : 0 < a := by
 
 
 example (t : ℤ) : t ∣ 0 := by
-  sorry
+  dsimp [(· ∣ ·)]
+  use 0
+  ring
 
 example : ¬(3 : ℤ) ∣ -10 := by
-  sorry
+  dsimp [(· ∣ ·)]
+  apply Int.not_dvd_of_exists_lt_and_lt
+  use -4
+  constructor
+  numbers
+  numbers
 
 example {x y : ℤ} (h : x ∣ y) : x ∣ 3 * y - 4 * y ^ 2 := by
-  sorry
+  dsimp [(· ∣ ·)] at *
+  obtain ⟨k, hk⟩ := h
+  use 3 * k - 4 * x * k ^ 2
+  calc
+    3 * y - 4 * y ^ 2
+      = 3 * (x * k) - 4 * (x * k) ^ 2 := by rw [hk]
+    _ = 3 * x * k - 4 * x ^ 2 * k ^ 2 := by ring
+    _ = x * (3 * k - 4 * x * k ^ 2) := by ring
 
 example {m n : ℤ} (h : m ∣ n) : m ∣ 2 * n ^ 3 + n := by
   sorry
