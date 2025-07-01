@@ -99,19 +99,62 @@ example {x y : ℤ} (h : x ∣ y) : x ∣ 3 * y - 4 * y ^ 2 := by
     _ = x * (3 * k - 4 * x * k ^ 2) := by ring
 
 example {m n : ℤ} (h : m ∣ n) : m ∣ 2 * n ^ 3 + n := by
-  sorry
+  dsimp [(· ∣ ·)] at *
+  obtain ⟨k, hk⟩ := h
+  use 2 * m ^ 2 * k ^ 3 + k
+  calc
+    2 * n ^ 3 + n
+      = 2 * (m * k) ^ 3 + m * k := by rw [hk]
+    _ = 2 * m ^ 3 * k ^ 3 + m * k := by ring
+    _ = m * (2 * m ^ 2 * k ^ 3 + k) := by ring
 
 example {a b : ℤ} (hab : a ∣ b) : a ∣ 2 * b ^ 3 - b ^ 2 + 3 * b := by
-  sorry
+  dsimp [(· ∣ ·)] at *
+  obtain ⟨k, hk⟩ := hab
+  use 2 * a ^ 2 * k ^ 3 - a * k ^ 2 + 3 * k
+  calc
+    2 * b ^ 3 - b ^ 2 + 3 * b
+      = 2 * (a * k) ^ 3 - (a * k) ^ 2 + 3 * (a * k) := by rw [hk]
+    _ = 2 * a ^ 3 * k ^ 3 - a ^ 2 * k ^ 2 + 3 * a * k := by ring
+    _ = a * (2 * a ^ 2 * k ^ 3 - a * k ^ 2 + 3 * k) := by ring
 
 example {k l m : ℤ} (h1 : k ∣ l) (h2 : l ^ 3 ∣ m) : k ^ 3 ∣ m := by
-  sorry
+  dsimp [(· ∣ ·)] at *
+  obtain ⟨s, hs⟩ := h1
+  obtain ⟨t, ht⟩ := h2
+  use s ^ 3 * t
+  calc
+    m = l ^ 3 * t := by rw [ht]
+    _ = (k * s) ^ 3 * t := by rw [hs]
+    _ = k ^ 3 * (s ^ 3 * t) := by ring
 
 example {p q r : ℤ} (hpq : p ^ 3 ∣ q) (hqr : q ^ 2 ∣ r) : p ^ 6 ∣ r := by
-  sorry
+  dsimp [(· ∣ ·)] at *
+  obtain ⟨s, hs⟩ := hpq
+  obtain ⟨t, ht⟩ := hqr
+  use s ^ 2 * t
+  calc
+    r = q ^ 2 * t := by rw [ht]
+    _ = (p ^ 3 * s) ^ 2 * t := by rw [hs]
+    _ = p ^ 6 * (s ^ 2 * t) := by ring
 
 example : ∃ n : ℕ, 0 < n ∧ 9 ∣ 2 ^ n - 1 := by
-  sorry
+  dsimp [(· ∣ ·)] at *
+  use 6
+  constructor
+  · numbers
+  · use 7
+    numbers
 
 example : ∃ a b : ℤ, 0 < b ∧ b < a ∧ a - b ∣ a + b := by
-  sorry
+  dsimp [(· ∣ ·)] at *
+  use 2, 1
+  constructor
+  numbers
+  constructor
+  numbers
+  use 3
+  calc
+    (2 + 1 : ℤ)
+      = 3 := by numbers
+    _ = (2 - 1) * 3 := by ring
