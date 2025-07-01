@@ -86,7 +86,50 @@ example : ∃ k : ℤ, 5 * k ≡ 6 [ZMOD 8] := by
     _ ≡ 6 [ZMOD 8] := by extra
 
 example (n : ℤ) : 5 * n ^ 2 + 3 * n + 7 ≡ 1 [ZMOD 2] := by
-  sorry
+  mod_cases hn: n % 2
+  calc
+    5 * n ^ 2 + 3 * n + 7
+      ≡ 5 * 0 ^ 2 + 3 * 0 + 7 [ZMOD 2] := by rel [hn]
+    _ = 7 := by numbers
+    _ = 1 + 2 * 3 := by ring
+    _ ≡ 1 [ZMOD 2] := by extra
+  calc
+    5 * n ^ 2 + 3 * n + 7
+      ≡ 5 * 1 ^ 2 + 3 * 1 + 7 [ZMOD 2] := by rel [hn]
+    _ = 15 := by numbers
+    _ = 1 + 2 * 7 := by ring
+    _ ≡ 1 [ZMOD 2] := by extra
 
 example {x : ℤ} : x ^ 5 ≡ x [ZMOD 5] := by
-  sorry
+  mod_cases hx: x % 5
+  calc
+    x ^ 5
+      ≡ 0 ^ 5 [ZMOD 5] := by rel [hx]
+    _ = 0 := by numbers
+    _ ≡ x [ZMOD 5] := by rel [hx]
+  calc
+    x ^ 5
+      ≡ 1 ^ 5 [ZMOD 5] := by rel [hx]
+    _ = 1 := by numbers
+    _ ≡ x [ZMOD 5] := by rel [hx]
+  calc
+    x ^ 5
+      ≡ 2 ^ 5 [ZMOD 5] := by rel [hx]
+    _ = 32 := by numbers
+    _ = 2 + 5 * 6 := by ring
+    _ ≡ 2 [ZMOD 5] := by extra
+    _ ≡ x [ZMOD 5] := by rel [hx]
+  calc
+    x ^ 5
+      ≡ 3 ^ 5 [ZMOD 5] := by rel [hx]
+    _ = 243 := by numbers
+    _ = 3 + 5 * 48 := by ring
+    _ ≡ 3 [ZMOD 5] := by extra
+    _ ≡ x [ZMOD 5] := by rel [hx]
+  calc
+    x ^ 5
+      ≡ 4 ^ 5 [ZMOD 5] := by rel [hx]
+    _ = 1024 := by numbers
+    _ = 4 + 5 * 204 := by ring
+    _ ≡ 4 [ZMOD 5] := by extra
+    _ ≡ x [ZMOD 5] := by rel [hx]
