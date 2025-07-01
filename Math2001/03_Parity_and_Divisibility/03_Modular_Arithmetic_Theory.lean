@@ -119,25 +119,65 @@ example {a b : ℤ} (ha : a ≡ 2 [ZMOD 4]) :
 
 
 example : 34 ≡ 104 [ZMOD 5] := by
-  sorry
+  use -14
+  numbers
 
 theorem Int.ModEq.symm (h : a ≡ b [ZMOD n]) : b ≡ a [ZMOD n] := by
-  sorry
+  dsimp [Int.ModEq] at *
+  obtain ⟨x, hx⟩ := h
+  use - x
+  calc
+    b - a
+      = - (a - b) := by ring
+    _ = - (n * x) := by rw [hx]
+    _ = n * (- x) := by ring
 
 theorem Int.ModEq.trans (h1 : a ≡ b [ZMOD n]) (h2 : b ≡ c [ZMOD n]) :
     a ≡ c [ZMOD n] := by
-  sorry
+  dsimp [Int.ModEq] at *
+  obtain ⟨x, hx⟩ := h1
+  obtain ⟨y, hy⟩ := h2
+  use x + y
+  calc
+    a - c
+      = a - b + (b - c) := by ring
+    _ = n * x + n * y := by rw [hx, hy]
+    _ = n * (x + y) := by ring
 
 example : a + n * c ≡ a [ZMOD n] := by
-  sorry
-
+  dsimp [Int.ModEq] at *
+  use c
+  calc
+    a + n * c - a
+      = n * c := by ring
 
 example {a b : ℤ} (h : a ≡ b [ZMOD 5]) : 2 * a + 3 ≡ 2 * b + 3 [ZMOD 5] := by
-  sorry
+  dsimp [Int.ModEq] at *
+  obtain ⟨x, hx⟩ := h
+  use 2 * x
+  calc
+    2 * a + 3 - (2 * b + 3)
+      = 2 * (a - b) := by ring
+    _ = 2 * (5 * x) := by rw [hx]
+    _ = 5 * (2 * x) := by ring
 
 example {m n : ℤ} (h : m ≡ n [ZMOD 4]) : 3 * m - 1 ≡ 3 * n - 1 [ZMOD 4] := by
-  sorry
+  dsimp [Int.ModEq] at *
+  obtain ⟨x, hx⟩ := h
+  use 3 * x
+  calc
+    3 * m - 1 - (3 * n - 1)
+      = 3 * (m - n) := by ring
+    _ = 3 * (4 * x) := by rw [hx]
+    _ = 4 * (3 * x) := by ring
 
 example {k : ℤ} (hb : k ≡ 3 [ZMOD 5]) :
     4 * k + k ^ 3 + 3 ≡ 4 * 3 + 3 ^ 3 + 3 [ZMOD 5] := by
-  sorry
+    apply Int.ModEq.add
+    apply Int.ModEq.add
+    apply Int.ModEq.mul
+    apply Int.ModEq.refl
+    apply hb
+    apply Int.ModEq.pow
+    apply hb
+    apply Int.ModEq.refl
