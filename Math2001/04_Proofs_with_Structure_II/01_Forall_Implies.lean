@@ -20,7 +20,17 @@ example {n : ℕ} (hn : ∀ m, n ∣ m) : n = 1 := by
 
 
 example {a b : ℝ} (h : ∀ x, x ≥ a ∨ x ≤ b) : a ≤ b := by
-  sorry
+  have h1: (a + b) / 2 ≥ a ∨ (a + b) / 2 ≤ b := by apply h
+  obtain ha | hb := h1
+  calc
+    b = 2 * ((a + b) / 2) - a := by ring
+    _ ≥ 2 * a - a := by rel [ha]
+    _ = a := by ring
+  calc
+    a = 2 * ((a + b) / 2) - b := by ring
+    _ ≤ 2 * b - b := by rel [hb]
+    _ = b := by ring
+
 
 example {a b : ℝ} (ha1 : a ^ 2 ≤ 2) (hb1 : b ^ 2 ≤ 2) (ha2 : ∀ y, y ^ 2 ≤ 2 → y ≤ a)
     (hb2 : ∀ y, y ^ 2 ≤ 2 → y ≤ b) :
