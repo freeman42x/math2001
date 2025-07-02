@@ -43,13 +43,38 @@ example {m : ℤ} (h1 : 8 ∣ m) (h2 : 5 ∣ m) : 40 ∣ m := by
 
 
 example {n : ℤ} (hn : 6 ∣ 11 * n) : 6 ∣ n := by
-  sorry
+  obtain ⟨a, ha⟩ := hn
+  use 2 * n - a
+  calc
+    n = 12 * n - 11 * n := by ring
+    _ = 12 * n - 6 * a := by rw [ha]
+    _ = 6 * (2 * n - a) := by ring
 
 example {a : ℤ} (ha : 7 ∣ 5 * a) : 7 ∣ a := by
-  sorry
+  obtain ⟨s, hs⟩ := ha
+  use 3 * s - 2 * a
+  calc
+    a = 15 * a - 14 * a := by ring
+    _ = 3 * (5 * a) - 14 * a := by ring
+    _ = 3 * (7 * s) - 14 * a := by rw [hs]
+    _ = 7 * (3 * s - 2 * a) := by ring
 
 example {n : ℤ} (h1 : 7 ∣ n) (h2 : 9 ∣ n) : 63 ∣ n := by
-  sorry
+  obtain ⟨s, hs⟩ := h1
+  obtain ⟨t, ht⟩ := h2
+  use 4 * s - 5 * t
+  calc
+    n = 36 * n - 35 * n := by ring
+    _ = 36 * (7 * s) - 35 * n := by rw [hs]
+    _ = 36 * (7 * s) - 35 * (9 * t) := by rw [ht]
+    _ = 63 * (4 * s - 5 * t) := by ring
 
 example {n : ℤ} (h1 : 5 ∣ n) (h2 : 13 ∣ n) : 65 ∣ n := by
-  sorry
+  obtain ⟨s, hs⟩ := h1
+  obtain ⟨t, ht⟩ := h2
+  use 8 * t - 3 * s
+  calc
+    n = 40 * n - 39 * n := by ring
+    _ = 40 * n - 39 * (5 * s) := by rw [hs]
+    _ = 40 * (13 * t) - 39 * (5 * s) := by rw [ht]
+    _ = 65 * (8 * t - 3 * s) := by ring
