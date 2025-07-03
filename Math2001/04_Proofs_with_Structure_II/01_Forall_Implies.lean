@@ -38,7 +38,8 @@ example {a b : ℝ} (ha1 : a ^ 2 ≤ 2) (hb1 : b ^ 2 ≤ 2) (ha2 : ∀ y, y ^ 2 
   apply le_antisymm
   · apply hb2
     apply ha1
-  · sorry
+  · apply ha2
+    apply hb1
 
 example : ∃ b : ℝ, ∀ x : ℝ, b ≤ x ^ 2 - 2 * x := by
   use -1
@@ -49,7 +50,18 @@ example : ∃ b : ℝ, ∀ x : ℝ, b ≤ x ^ 2 - 2 * x := by
 
 
 example : ∃ c : ℝ, ∀ x y, x ^ 2 + y ^ 2 ≤ 4 → x + y ≥ c := by
-  sorry
+  use -3
+  intros x y
+  intro (h : x ^ 2 + y ^ 2 ≤ 4)
+  have h1: -3 ≤ (x + y) ∧ (x + y) ≤ 3:= by
+    apply abs_le_of_sq_le_sq'
+    calc
+      (x + y) ^ 2 ≤ (x + y) ^ 2 + (x - y) ^ 2 := by extra
+                _ = 2 * (x ^ 2 + y ^ 2) := by ring
+                _ ≤ 2 * 4 := by rel [h]
+                _ ≤ 3 ^ 2 := by numbers
+    numbers
+  exact h1.left
 
 example : forall_sufficiently_large n : ℤ, n ^ 3 ≥ 4 * n ^ 2 + 7 := by
   dsimp
