@@ -100,10 +100,27 @@ example : ¬ Prime 6 := by
 
 
 example {a : ℚ} (h : ∀ b : ℚ, a ≥ -3 + 4 * b - b ^ 2) : a ≥ 1 :=
-  sorry
+  calc
+    a ≥ -3 + 4 * 2 - 2 ^ 2 := by apply h
+    _ ≥ 1 := by numbers
 
 example {n : ℤ} (hn : ∀ m, 1 ≤ m → m ≤ 5 → m ∣ n) : 15 ∣ n := by
-  sorry
+  have h3: 3 ∣ n := by
+    apply hn 3
+    numbers
+    numbers
+  have h5: 5 ∣ n := by
+    apply hn 5
+    numbers
+    numbers
+  obtain ⟨a, ha⟩ := h3
+  obtain ⟨b, hb⟩ := h5
+  use 2 * b - a
+  calc
+    n = 6 * n - 5 * n := by ring
+    _ = 6 * (5 * b) - 5 * n := by rw [hb]
+    _ = 6 * (5 * b) - 5 * (3 * a) := by rw [ha]
+    _ = 15 * (2 * b - a) := by ring
 
 example : ∃ n : ℕ, ∀ m : ℕ, n ≤ m := by
   sorry
