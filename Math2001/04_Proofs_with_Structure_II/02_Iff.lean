@@ -90,7 +90,35 @@ example {x : ℝ} : x ^ 2 + x - 6 = 0 ↔ x = -3 ∨ x = 2 := by
       numbers
 
 example {a : ℤ} : a ^ 2 - 5 * a + 5 ≤ -1 ↔ a = 2 ∨ a = 3 := by
-  sorry
+  constructor
+  · intro h
+    have h1: (2 * a - 5) ^ 2 ≤ 1 ^ 2 := by
+      calc
+        (2 * a - 5) ^ 2 = 4 * (a ^ 2 - 5 * a + 5) + 5 := by ring
+                      _ ≤ 4 * (-1) + 5 := by rel [h]
+                      _ = 1 := by ring
+                      _ = 1 ^ 2 := by ring
+    have h2: -1 ≤ 2 * a - 5 ∧ 2 * a - 5 ≤ 1:= by
+      apply abs_le_of_sq_le_sq'
+      exact h1
+      numbers
+    obtain ⟨h3, h4⟩ := h2
+    have h3': 2 * 2 ≤ 2 * a := by addarith [h3]
+    have h3'': 2 ≤ a := by cancel 2 at h3'
+    have h4': 2 * a ≤ 2 * 3 := by addarith [h4]
+    have h4'': a ≤ 3 := by cancel 2 at h4'
+
+    interval_cases a
+    · left
+      numbers
+    · right
+      numbers
+  · intro h
+    obtain h1 | h2 := h
+    · rw [h1]
+      numbers
+    · rw [h2]
+      numbers
 
 example {n : ℤ} (hn : n ^ 2 - 10 * n + 24 = 0) : Even n := by
   have hn1 :=
