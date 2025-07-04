@@ -167,7 +167,17 @@ example (n : ℤ) : Even n ∨ Odd n := by
 
 
 example {x : ℝ} : 2 * x - 1 = 11 ↔ x = 6 := by
-  sorry
+  constructor
+  · intro h
+    calc
+      x = (2 * x - 1) / 2 + 1 / 2 := by ring
+      _ = 11 / 2 + 1 / 2 := by rw [h]
+      _ = 6 := by numbers
+  · intro h
+    calc
+      2 * x - 1
+        = 2 * 6 - 1 := by rw [h]
+      _ = 11 := by numbers
 
 example {n : ℤ} : 63 ∣ n ↔ 7 ∣ n ∧ 9 ∣ n := by
   sorry
