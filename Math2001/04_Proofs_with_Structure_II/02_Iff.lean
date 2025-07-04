@@ -138,7 +138,13 @@ example {n : ℤ} (hn : n ^ 2 - 10 * n + 24 = 0) : Even n := by
     calc (n - 4) * (n - 6) = n ^ 2 - 10 * n + 24 := by ring
       _ = 0 := hn
   rw [mul_eq_zero] at hn1 -- `hn1 : n - 4 = 0 ∨ n - 6 = 0`
-  sorry
+  obtain hn | hn := hn1
+  dsimp [Even]
+  use 2
+  addarith [hn]
+  dsimp [Even]
+  use 3
+  addarith [hn]
 
 example {x y : ℤ} (hx : Odd x) (hy : Odd y) : Odd (x + y + 1) := by
   rw [Int.odd_iff_modEq] at *
@@ -152,7 +158,10 @@ example (n : ℤ) : Even n ∨ Odd n := by
   · left
     rw [Int.even_iff_modEq]
     apply hn
-  · sorry
+  · right
+    rw [Int.odd_iff_modEq]
+    apply hn
+
 
 /-! # Exercises -/
 
