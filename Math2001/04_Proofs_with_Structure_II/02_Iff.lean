@@ -125,7 +125,13 @@ example {n : ℤ} (hn : n ^ 2 - 10 * n + 24 = 0) : Even n := by
     calc (n - 4) * (n - 6) = n ^ 2 - 10 * n + 24 := by ring
       _ = 0 := hn
   have hn2 := eq_zero_or_eq_zero_of_mul_eq_zero hn1
-  sorry
+  obtain hn | hn := hn2
+  dsimp [Even]
+  use 2
+  addarith [hn]
+  dsimp [Even]
+  use 3
+  addarith [hn]
 
 example {n : ℤ} (hn : n ^ 2 - 10 * n + 24 = 0) : Even n := by
   have hn1 :=
