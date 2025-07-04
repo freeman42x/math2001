@@ -218,7 +218,13 @@ theorem dvd_iff_modEq {a n : ℤ} : n ∣ a ↔ a ≡ 0 [ZMOD n] := by
       a = n * s := by addarith [hs]
 
 example {a b : ℤ} (hab : a ∣ b) : a ∣ 2 * b ^ 3 - b ^ 2 + 3 * b := by
-  sorry
+  obtain ⟨s, hs⟩ := hab
+  use 2 * a ^ 2 * s ^ 3 - a * s ^ 2 + 3 * s
+  calc
+    2 * b ^ 3 - b ^ 2 + 3 * b
+      = 2 * (a * s) ^ 3 - (a * s) ^ 2 + 3 * (a * s) := by rw [hs]
+    _ = 2 * a ^ 3 * s ^ 3 - a ^ 2 * s ^ 2 + 3 * a * s := by ring
+    _ = a * (2 * a ^ 2 * s ^ 3 - a * s ^ 2 + 3 * s) := by ring
 
 example {k : ℕ} : k ^ 2 ≤ 6 ↔ k = 0 ∨ k = 1 ∨ k = 2 := by
   sorry
