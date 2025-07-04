@@ -137,7 +137,21 @@ example : ∃ a : ℝ, ∀ b : ℝ, ∃ c : ℝ, a + b < c := by
     _ < x + 1 := by extra
 
 example : forall_sufficiently_large x : ℝ, x ^ 3 + 3 * x ≥ 7 * x ^ 2 + 12 := by
-  sorry
+  dsimp
+  use 8
+  intro n hn
+  calc
+    n ^ 3 + 3 * n
+      = n * n ^ 2 + 3 * n := by ring
+    _ ≥ 8 * n ^ 2 + 3 * n := by rel [hn]
+    _ ≥ 8 * n ^ 2 + 3 * 8 := by rel [hn]
+    _ = 7 * n ^ 2 + n ^ 2 + 24 := by ring
+    _ ≥ 7 * n ^ 2 + 24 := by extra
+    _ = 7 * n ^ 2 + 12 + 12 := by ring
+    _ ≥ 7 * n ^ 2 + 12 := by extra
 
 example : ¬(Prime 45) := by
-  sorry
+  apply not_prime 5 9
+  numbers
+  numbers
+  numbers
