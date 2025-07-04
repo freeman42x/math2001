@@ -227,4 +227,28 @@ example {a b : ℤ} (hab : a ∣ b) : a ∣ 2 * b ^ 3 - b ^ 2 + 3 * b := by
     _ = a * (2 * a ^ 2 * s ^ 3 - a * s ^ 2 + 3 * s) := by ring
 
 example {k : ℕ} : k ^ 2 ≤ 6 ↔ k = 0 ∨ k = 1 ∨ k = 2 := by
-  sorry
+  constructor
+  · intro h
+    have h2 : k < 3
+    · apply lt_of_pow_lt_pow 2
+      · numbers
+      · calc
+          k ^ 2 ≤ 6 := h
+          _ < 9 := by numbers
+    interval_cases k
+    left
+    numbers
+    right
+    left
+    numbers
+    right
+    right
+    numbers
+  · intro h
+    obtain h3 | h4 | h5 := h
+    rw [h3]
+    numbers
+    rw [h4]
+    numbers
+    rw [h5]
+    numbers
