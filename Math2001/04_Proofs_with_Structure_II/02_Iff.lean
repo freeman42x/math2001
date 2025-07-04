@@ -180,7 +180,28 @@ example {x : ℝ} : 2 * x - 1 = 11 ↔ x = 6 := by
       _ = 11 := by numbers
 
 example {n : ℤ} : 63 ∣ n ↔ 7 ∣ n ∧ 9 ∣ n := by
-  sorry
+  constructor
+  · intro h
+    obtain ⟨a, ha⟩ := h
+    constructor
+    · use 9 * a
+      calc
+        n = 63 * a := by rw [ha]
+        _ = 7 * (9 * a) := by ring
+    · use 7 * a
+      calc
+        n = 63 * a := by rw [ha]
+        _ = 9 * (7 * a) := by ring
+  · intro h
+    obtain ⟨h1, h2⟩ := h
+    obtain ⟨a, ha⟩ := h1
+    obtain ⟨b, hb⟩ := h2
+    use 4 * a - 5 * b
+    calc
+      n = 36 * n - 35 * n := by ring
+      _ = 36 * (7 * a) - 35 * n := by rw [ha]
+      _ = 36 * (7 * a) - 35 * (9 * b) := by rw [hb]
+      _ = 63 * (4 * a - 5 * b) := by ring
 
 theorem dvd_iff_modEq {a n : ℤ} : n ∣ a ↔ a ≡ 0 [ZMOD n] := by
   sorry
