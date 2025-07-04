@@ -43,7 +43,14 @@ theorem odd_iff_modEq (n : ℤ) : Odd n ↔ n ≡ 1 [ZMOD 2] := by
     dsimp [(· ∣ ·)]
     use k
     addarith [hk]
-  · sorry
+  · intro ha
+    dsimp [Int.ModEq] at ha
+    dsimp [(· ∣ ·)] at ha
+    obtain ⟨k, hk⟩ := ha
+    dsimp [Int.Odd]
+    use k
+    addarith [hk]
+
 
 theorem even_iff_modEq (n : ℤ) : Even n ↔ n ≡ 0 [ZMOD 2] := by
   constructor
@@ -53,10 +60,34 @@ theorem even_iff_modEq (n : ℤ) : Even n ↔ n ≡ 0 [ZMOD 2] := by
     dsimp [(· ∣ ·)]
     use k
     addarith [hk]
-  · sorry
+  · intro h
+    dsimp [Int.ModEq] at h
+    dsimp [(· ∣ ·)] at h
+    obtain ⟨k, hk⟩ := h
+    dsimp [Even]
+    use k
+    addarith [hk]
 
 example {x : ℝ} : x ^ 2 + x - 6 = 0 ↔ x = -3 ∨ x = 2 := by
-  sorry
+  constructor
+  · intro h
+    have h1 : (x + 3) * (x - 2) = 0 := by
+      calc
+        (x + 3) * (x - 2) = x ^ 2 - 2 * x + 3 * x - 6 := by ring
+                        _ = x ^ 2 + x - 6 := by ring
+                        _ = 0 := by rel [h]
+    have h2 := eq_zero_or_eq_zero_of_mul_eq_zero h1
+    obtain h3 | h4 := h2
+    left
+    addarith [h3]
+    right
+    addarith [h4]
+  · intro h
+    obtain h1 | h2 := h
+    · rw [h1]
+      numbers
+    · rw [h2]
+      numbers
 
 example {a : ℤ} : a ^ 2 - 5 * a + 5 ≤ -1 ↔ a = 2 ∨ a = 3 := by
   sorry
