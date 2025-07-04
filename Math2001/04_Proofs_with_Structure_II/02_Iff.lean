@@ -204,7 +204,18 @@ example {n : ℤ} : 63 ∣ n ↔ 7 ∣ n ∧ 9 ∣ n := by
       _ = 63 * (4 * a - 5 * b) := by ring
 
 theorem dvd_iff_modEq {a n : ℤ} : n ∣ a ↔ a ≡ 0 [ZMOD n] := by
-  sorry
+  constructor
+  · intro h
+    obtain ⟨s, hs⟩ := h
+    calc
+      a = n * s := by rw[hs]
+      _ = 0 + n * s := by ring
+      _ ≡ 0 [ZMOD n] := by extra
+  · intro h
+    obtain ⟨s, hs⟩ := h
+    use s
+    calc
+      a = n * s := by addarith [hs]
 
 example {a b : ℤ} (hab : a ∣ b) : a ∣ 2 * b ^ 3 - b ^ 2 + 3 * b := by
   sorry
