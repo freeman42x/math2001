@@ -102,10 +102,49 @@ example : ∃! r : ℤ, 0 ≤ r ∧ r < 5 ∧ 14 ≡ r [ZMOD 5] := by
 
 
 example : ∃! x : ℚ, 4 * x - 3 = 9 := by
-  sorry
+  use 3
+  dsimp
+  constructor
+  · numbers
+  · intro x
+    intro h1
+    calc
+      x = (4 * x - 3 + 3) / 4 := by ring
+      _ = (9 + 3) / 4 := by rw [h1]
+      _ = 3 := by numbers
 
 example : ∃! n : ℕ, ∀ a, n ≤ a := by
-  sorry
+  use 0
+  dsimp
+  constructor
+  · intro h
+    apply Nat.zero_le
+  · intro h h1
+    have h2 : 0 ≤ h := by apply Nat.zero_le
+    have h3 : h ≤ 0 := by apply h1
+    exact le_antisymm h3 h2
 
 example : ∃! r : ℤ, 0 ≤ r ∧ r < 3 ∧ 11 ≡ r [ZMOD 3] := by
-  sorry
+  use 2
+  dsimp
+  constructor
+  · constructor
+    · numbers
+    constructor
+    · numbers
+    use 3
+    numbers
+  intro r hr
+  obtain ⟨hr1, hr2, q, hr3⟩ := hr
+  have :=
+    calc
+      3 * 2 < 11 - r := by addarith [hr2]
+      _ = 3 * q := by rw [hr3]
+  cancel 3 at this
+  have :=
+    calc
+      3 * q = 11 - r := by rw [hr3]
+      _ < 3 * 4 := by addarith [hr1]
+  cancel 3 at this
+  interval_cases q
+  addarith [hr3]
