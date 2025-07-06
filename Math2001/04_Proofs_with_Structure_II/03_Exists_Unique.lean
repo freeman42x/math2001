@@ -21,7 +21,39 @@ example : ∃! a : ℝ, 3 * a + 1 = 7 := by
 
 
 example : ∃! x : ℚ, ∀ a, a ≥ 1 → a ≤ 3 → (a - x) ^ 2 ≤ 1 := by
-  sorry
+  use 2
+  dsimp
+  constructor
+  · intro h
+    intro h1
+    intro h2
+    have h3: -1 ≤ h - 2 := by
+      addarith [h1]
+    have h4: h - 2 ≤ 1 := by
+      addarith [h2]
+    calc
+      (h - 2) ^ 2
+        ≤ 1 ^ 2 := by apply sq_le_sq' h3 h4
+      _ = 1 := by numbers
+  · intro y hy
+    have hy1 : (1 - y) ^ 2 ≤ 1 := by
+      apply hy
+      · numbers
+      · numbers
+    have hy3 : (3 - y) ^ 2 ≤ 1 := by
+      apply hy
+      · numbers
+      · numbers
+    have h1: (y - 2) ^ 2 ≤ 0 := by
+      calc
+        (y - 2) ^ 2
+          = ((1 - y) ^ 2 + (3 - y) ^ 2 - 2) / 2 := by ring
+        _ ≤ (1 + 1 - 2) / 2 := by rel [hy1, hy3]
+        _ = 0 := by numbers
+    have h2: (y - 2) ^ 2 ≥ 0 := by extra
+    have h3: (y - 2) ^ 2 = 0 := by apply le_antisymm h1 h2
+    have h4: y - 2 = 0 := by cancel 2 at h3
+    addarith [h4]
 
 example {x : ℚ} (hx : ∃! a : ℚ, a ^ 2 = x) : x = 0 := by
   obtain ⟨a, ha1, ha2⟩ := hx
