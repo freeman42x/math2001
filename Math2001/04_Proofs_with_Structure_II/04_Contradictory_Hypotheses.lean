@@ -205,4 +205,22 @@ example {x : ℚ} (h1 : x ^ 2 = 4) (h2 : 1 < x) : x = 2 := by
 namespace Nat
 
 example (p : ℕ) (h : Prime p) : p = 2 ∨ Odd p := by
-  sorry
+  dsimp [Prime] at h
+  obtain ⟨h2, h3⟩ := h
+  obtain h4 | h5 := Nat.eq_or_lt_of_le h2
+  · left
+    addarith [h4]
+  · have h6 := Nat.even_or_odd p
+    obtain h7 | h8 := h6
+    · rw [Even] at h7
+      obtain ⟨k, hk⟩ := h7
+      have h9 : 2 ∣ p :=
+        by use k; exact hk
+      obtain h10 | h11 := h3 2 h9
+      · numbers at h10
+      · have :=
+        calc 2 = p := h11
+         _ > 2 := h5
+        numbers at this
+    · right
+      exact h8
