@@ -193,7 +193,14 @@ example {x : ℚ} (h1 : x ^ 2 = 4) (h2 : 1 < x) : x = 2 := by
       (x + 2) * (x - 2) = x ^ 2 + 2 * x - 2 * x - 4 := by ring
       _ = 0 := by addarith [h1]
   rw [mul_eq_zero] at h3
-  sorry
+  obtain hn | hn := h3
+  · have :=
+      calc
+        -2 = 0 - 2 := by ring
+        _ = x := by addarith [hn]
+        _ > 1 := by addarith [h2]
+    numbers at this
+  · addarith [hn]
 
 namespace Nat
 
