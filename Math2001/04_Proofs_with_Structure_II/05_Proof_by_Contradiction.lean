@@ -23,7 +23,10 @@ example : ¬ 3 ∣ 13 := by
     calc 13 = 3 * k := hk
       _ ≤ 3 * 4 := by rel [h4]
     numbers at h
-  · sorry
+  · have h :=
+    calc 13 = 3 * k := hk
+      _ ≥ 3 * 5 := by rel [h5]
+    numbers at h
 
 example {x y : ℝ} (h : x + y = 0) : ¬(x > 0 ∧ y > 0) := by
   intro h
