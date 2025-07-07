@@ -121,7 +121,7 @@ example {a b c : ℕ} (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)
               < a ^ 2 + b ^ 2 := by extra
             _ = c ^ 2 := by rw [h_pyth]
         have h4 : b < c := by cancel 2 at h3
-        have h5 : b + 1 ≤ c := by apply Nat.succ_le.mpr h4
+        have h5 : b + 1 ≤ c := by exact h4
         have h6 : c ^ 2 < (b + 1) ^ 2 := by
           calc
             c ^ 2
@@ -142,10 +142,33 @@ example {a b c : ℕ} (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)
 
 example {x y : ℝ} (n : ℕ) (hx : 0 ≤ x) (hn : 0 < n) (h : y ^ n ≤ x ^ n) :
     y ≤ x := by
-  sorry
+  cancel n at h
 
 example (n : ℤ) (hn : n ^ 2 ≡ 4 [ZMOD 5]) : n ≡ 2 [ZMOD 5] ∨ n ≡ 3 [ZMOD 5] := by
-  sorry
+  mod_cases h : n % 5
+  · have H :=
+      calc 0 ≡ 0 [ZMOD 5] := by extra
+      _ ≡ 0 ^ 2 [ZMOD 5]:= by numbers
+      _ ≡ n ^ 2 [ZMOD 5] := by rel [h]
+      _ ≡ 4 [ZMOD 5] := hn
+    numbers at H
+  · have H :=
+      calc 1 ≡ 1 [ZMOD 5] := by extra
+      _ ≡ 1 ^ 2 [ZMOD 5]:= by numbers
+      _ ≡ n ^ 2 [ZMOD 5] := by rel [h]
+      _ ≡ 4 [ZMOD 5] := hn
+    numbers at H
+  · left
+    exact h
+  · right
+    exact h
+  · have H :=
+      calc 1 ≡ 1 + 5 * 3 [ZMOD 5] := by extra
+      _ ≡ 16 [ZMOD 5]:= by numbers
+      _ ≡ 4 ^ 2 [ZMOD 5]:= by numbers
+      _ ≡ n ^ 2 [ZMOD 5] := by rel [h]
+      _ ≡ 4 [ZMOD 5] := hn
+    numbers at H
 
 example : Prime 7 := by
   sorry
