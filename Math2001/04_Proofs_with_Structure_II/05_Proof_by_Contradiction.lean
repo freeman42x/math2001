@@ -205,7 +205,22 @@ example : ¬ (∃ t : ℝ, t ≤ 4 ∧ t ≥ 5) := by
   exact this
 
 example : ¬ (∃ a : ℝ, a ^ 2 ≤ 8 ∧ a ^ 3 ≥ 30) := by
-  sorry
+  intro h
+  obtain ⟨a, t2, t3⟩ := h
+  have h1 :=
+  calc
+    a ^ 6 = (a ^ 2) ^ 3 := by ring
+      _ = (a ^ 2) * (a ^ 2) * (a ^ 2) := by ring
+      _ ≤ 8 * 8 * 8 := by rel [t2]
+      _= 512 := by numbers
+  have h2 :=
+  calc
+    a ^ 6 = (a ^ 3) ^ 2 := by ring
+      _ ≥ 30 ^ 2 := by rel [t3]
+      _ = 900 := by numbers
+      _ > 512 := by numbers
+  apply not_lt_of_ge h1
+  exact h2
 
 example : ¬ Int.Even 7 := by
   sorry
