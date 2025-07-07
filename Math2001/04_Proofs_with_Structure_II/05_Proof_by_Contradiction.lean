@@ -38,7 +38,19 @@ example {x y : ℝ} (h : x + y = 0) : ¬(x > 0 ∧ y > 0) := by
 
 
 example : ¬ (∃ n : ℕ, n ^ 2 = 2) := by
-  sorry
+  intro h
+  obtain ⟨n, hn⟩ := h
+  obtain h1 | h2 := le_or_succ_le n 1
+  · have :=
+      calc
+        2 = n ^ 2 := by addarith [hn]
+        _ ≤ 1 ^ 2 := by rel [h1]
+    numbers at this
+  · have :=
+      calc
+        2 = n ^ 2 := by addarith [hn]
+        _ ≥ 2 ^ 2 := by rel [h2]
+    numbers at this
 
 example (n : ℤ) : Int.Even n ↔ ¬ Int.Odd n := by
   constructor
