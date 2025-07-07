@@ -196,7 +196,13 @@ example : Prime 79 := by
 
 
 example : ¬ (∃ t : ℝ, t ≤ 4 ∧ t ≥ 5) := by
-  sorry
+  intro h
+  obtain ⟨s, t4, t5⟩ := h
+  have :=
+    calc s ≤ 4 := t4
+      _ < 5 := by numbers
+  apply not_lt_of_ge t5
+  exact this
 
 example : ¬ (∃ a : ℝ, a ^ 2 ≤ 8 ∧ a ^ 3 ≥ 30) := by
   sorry
