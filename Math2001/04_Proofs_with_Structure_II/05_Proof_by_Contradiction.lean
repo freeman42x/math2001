@@ -90,8 +90,17 @@ example (n : ℤ) : ¬(n ^ 2 ≡ 2 [ZMOD 3]) := by
       _ ≡ n ^ 2 [ZMOD 3] := by rel [hn]
       _ ≡ 2 [ZMOD 3] := by rel [h]
     numbers at h -- contradiction!
-  · sorry
-  · sorry
+  · have :=
+    calc 1 = 1 ^ 2 := by numbers
+         _ ≡ n ^ 2 [ZMOD 3] := by rel [hn]
+         _ ≡ 2 [ZMOD 3] := by rel [h]
+    numbers at this
+  · have :=
+    calc (1 : ℤ) ≡ 1 + 3 * 1 [ZMOD 3] := by extra
+               _ = 2 ^ 2 := by numbers
+               _ ≡ n ^ 2 [ZMOD 3] := by rel [hn]
+               _ ≡ 2 [ZMOD 3] := by rel [h]
+    numbers at this
 
 example {p : ℕ} (k l : ℕ) (hk1 : k ≠ 1) (hkp : k ≠ p) (hkl : p = k * l) :
     ¬(Prime p) := by
