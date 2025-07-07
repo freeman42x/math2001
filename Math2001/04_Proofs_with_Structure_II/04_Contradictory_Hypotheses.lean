@@ -65,7 +65,14 @@ example {p : ℕ} (hp : 2 ≤ p) (H : ∀ m : ℕ, 1 < m → m < p → ¬m ∣ p
     left
     addarith [hm]
   -- the case `1 < m`
-  sorry
+  · right
+    have hmp' : m ≤ p := Nat.le_of_dvd hp' hmp
+    obtain hm | hm_right : m = p ∨ m < p := eq_or_lt_of_le hmp'
+    · -- the case `m = p`
+      exact hm
+    · -- the case `m < p`
+      have : ¬m ∣ p := H m hm_left hm_right
+      contradiction
 
 example : Prime 5 := by
   apply prime_test
@@ -83,7 +90,52 @@ example : Prime 5 := by
 
 example {a b c : ℕ} (ha : 0 < a) (hb : 0 < b) (hc : 0 < c)
     (h_pyth : a ^ 2 + b ^ 2 = c ^ 2) : 3 ≤ a := by
-  sorry
+    have hn :=  le_or_succ_le a 2
+    obtain h_le | h_succ_le := hn
+    -- case a ≤  2
+    · have hn1 :=  le_or_succ_le b 1
+      obtain h_le1 | h_succ_le1 := hn1
+      -- case b ≤ 1
+      · have h1 : c ^ 2 < 3 ^ 2 := by
+          calc
+            c ^ 2
+              = a ^ 2 + b ^ 2 := by addarith [h_pyth]
+            _ ≤ 2 ^ 2 + 1 ^ 2 := by rel [h_le, h_le1]
+            _ < 3 ^ 2 := by numbers
+        have h2: c < 3 := by cancel 2 at h1
+        interval_cases a
+        · interval_cases c
+          · interval_cases b
+            numbers at h_pyth
+          · interval_cases b
+            numbers at h_pyth
+        · interval_cases c
+          · interval_cases b
+            numbers at h_pyth
+          · interval_cases b
+            numbers at h_pyth
+      -- case 2 ≤ b
+      · have h3 : b ^ 2 < c ^ 2 := by
+          calc
+            b ^ 2
+              < a ^ 2 + b ^ 2 := by extra
+            _ = c ^ 2 := by rw [h_pyth]
+        have h4 : b < c := by cancel 2 at h3
+        have h5 : b + 1 ≤ c := by apply Nat.succ_le.mpr h4
+        have h6 : c ^ 2 < (b + 1) ^ 2 := by
+          calc
+            c ^ 2
+              = a ^ 2 + b ^ 2 := by rw [h_pyth]
+            _ ≤ 2 ^ 2 + b ^ 2 := by rel [h_le]
+            _ = b ^ 2 + 2 * 2 := by ring
+            _ ≤ b ^ 2 + 2 * b := by rel [h_succ_le1]
+            _ < b ^ 2 + 2 * b + 1 := by extra
+            _ = (b + 1) ^ 2 := by ring
+        have h7: c < b + 1 := by cancel 2 at h6
+        have h8 := not_le_of_lt h7
+        contradiction
+    -- case 3 ≤ a
+    . exact h_succ_le
 
 /-! # Exercises -/
 
