@@ -68,7 +68,19 @@ example (n : ℤ) : Int.Even n ↔ ¬ Int.Odd n := by
 
 
 example (n : ℤ) : Int.Odd n ↔ ¬ Int.Even n := by
-  sorry
+  constructor
+  · intro h1 h2
+    rw [Int.odd_iff_modEq] at h1
+    rw [Int.even_iff_modEq] at h2
+    have :=
+      calc
+        1 ≡ n [ZMOD 2] := by rel [h1]
+        _ ≡ 0 [ZMOD 2] := by rel [h2]
+    numbers at this
+  · intro h
+    obtain h1 | h2 := Int.even_or_odd n
+    · contradiction
+    · exact h2
 
 example (n : ℤ) : ¬(n ^ 2 ≡ 2 [ZMOD 3]) := by
   intro h
