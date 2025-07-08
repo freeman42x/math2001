@@ -223,7 +223,14 @@ example : ¬ (∃ a : ℝ, a ^ 2 ≤ 8 ∧ a ^ 3 ≥ 30) := by
   exact h2
 
 example : ¬ Int.Even 7 := by
-  sorry
+  intro h
+  rw [Int.even_iff_modEq] at h
+  have :=
+  calc
+    1 ≡ 1 + 2 * 3 [ZMOD 2] := by extra
+     _ ≡ 7 [ZMOD 2] := by numbers
+     _ ≡ 0 [ZMOD 2] := by rel [h]
+  numbers at this
 
 example {n : ℤ} (hn : n + 3 = 7) : ¬ (Int.Even n ∧ n ^ 2 = 10) := by
   sorry
