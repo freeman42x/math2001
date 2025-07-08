@@ -264,7 +264,34 @@ example {x : ℝ} (hx : x ^ 2 < 9) : ¬ (x ≤ -3 ∨ x ≥ 3) := by
     exact hx
 
 example : ¬ (∃ N : ℕ, ∀ k > N, Nat.Even k) := by
-  sorry
+  intro h
+  obtain ⟨n, hN⟩ := h
+  obtain h1 | h2 := Nat.even_or_odd n
+  · have h3: Nat.Even (n + 1) := by
+      apply hN (n + 1)
+      extra
+    obtain ⟨k, hk⟩ := h1
+    rw [Nat.even_iff_not_odd] at h3
+    have h4 : Nat.Odd (n + 1) := by
+      dsimp [Nat.Odd]
+      use k
+      calc
+        n + 1 = (n) + 1 := by ring
+          _ = 2 * k + 1 := by rw [hk]
+    contradiction
+  · have h3: Nat.Even (n + 2) := by
+      apply hN (n + 2)
+      extra
+    obtain ⟨k, hk⟩ := h2
+    rw [Nat.even_iff_not_odd] at h3
+    have h4 : Nat.Odd (n + 2) := by
+      dsimp [Nat.Odd]
+      use k + 1
+      calc
+        n + 2 = (n) + 2:= by ring
+          _ = (2 * k + 1) + 2 := by rw [hk]
+          _ = 2 * (k + 1) + 1 := by ring
+    contradiction
 
 example (n : ℤ) : ¬(n ^ 2 ≡ 2 [ZMOD 4]) := by
   sorry
