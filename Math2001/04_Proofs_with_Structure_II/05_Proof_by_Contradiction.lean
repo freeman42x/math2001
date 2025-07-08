@@ -245,7 +245,23 @@ example {n : ℤ} (hn : n + 3 = 7) : ¬ (Int.Even n ∧ n ^ 2 = 10) := by
   contradiction
 
 example {x : ℝ} (hx : x ^ 2 < 9) : ¬ (x ≤ -3 ∨ x ≥ 3) := by
-  sorry
+  intro h
+  obtain h1 | h2 := h
+  · have h3 : -x ≥ 3 :=  by addarith [h1]
+    have h4 :=
+      calc
+        x ^ 2 = (-x) ^ 2 := by ring
+          _ ≥ 3 ^ 2 := by rel [h3]
+          _ = 9 := by numbers
+    apply not_lt_of_ge h4
+    exact hx
+  · have h4 :=
+      calc
+      x ^ 2 = x * x := by ring
+        _ ≥ 3 * 3 := by rel [h2]
+        _ = 9 := by numbers
+    apply not_lt_of_ge h4
+    exact hx
 
 example : ¬ (∃ N : ℕ, ∀ k > N, Nat.Even k) := by
   sorry
