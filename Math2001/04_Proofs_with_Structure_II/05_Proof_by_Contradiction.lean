@@ -233,7 +233,16 @@ example : ¬ Int.Even 7 := by
   numbers at this
 
 example {n : ℤ} (hn : n + 3 = 7) : ¬ (Int.Even n ∧ n ^ 2 = 10) := by
-  sorry
+  intro h
+  obtain ⟨h_even, hn2⟩ := h
+  have h1: n = 4 := by addarith [hn]
+  have h4 :=
+    calc
+      n ^ 2
+        = 4 ^ 2 := by rw [h1]
+      _ = 16 := by numbers
+      _ ≠ 10 := by numbers
+  contradiction
 
 example {x : ℝ} (hx : x ^ 2 < 9) : ¬ (x ≤ -3 ∨ x ≥ 3) := by
   sorry
