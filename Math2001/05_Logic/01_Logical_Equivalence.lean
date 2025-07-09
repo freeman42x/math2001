@@ -194,7 +194,17 @@ example {P Q : α → Prop} (h : ∀ x, P x ↔ Q x) : (∃ x, P x) ↔ (∃ x, 
     apply qx
 
 example (P : α → β → Prop) : (∃ x y, P x y) ↔ ∃ y x, P x y := by
-  sorry
+  constructor
+  · intro x
+    obtain ⟨x, y, pxy⟩ := x
+    use y
+    use x
+    apply pxy
+  · intro x
+    obtain ⟨y, x, pxy⟩ := x
+    use x
+    use y
+    apply pxy
 
 example (P : α → β → Prop) : (∀ x y, P x y) ↔ ∀ y x, P x y := by
   sorry
