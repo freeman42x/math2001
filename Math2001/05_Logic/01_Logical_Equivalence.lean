@@ -19,6 +19,7 @@ example (P Q : Prop) : P → (P ∨ ¬ Q) := by
 
 #truth_table ¬(P ∧ ¬ Q)
 
+#truth_table P ↔ ( ¬P ∨ Q)
 
 example (P : Prop) : (P ∨ P) ↔ P := by
   constructor
@@ -43,7 +44,16 @@ example (P Q R : Prop) : (P ∧ (Q ∨ R)) ↔ ((P ∧ Q) ∨ (P ∧ R)) := by
       constructor
       · apply h1
       · apply h2
-  · sorry
+  · intro h
+    obtain ⟨h1, h2⟩ | ⟨h3, h4⟩ := h
+    · constructor
+      · apply h1
+      · left
+        apply h2
+    · constructor
+      · apply h3
+      · right
+        apply h4
 
 #truth_table P ∧ (Q ∨ R)
 #truth_table (P ∧ Q) ∨ (P ∧ R)
