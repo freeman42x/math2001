@@ -294,7 +294,32 @@ example : ¬ (∃ N : ℕ, ∀ k > N, Nat.Even k) := by
     contradiction
 
 example (n : ℤ) : ¬(n ^ 2 ≡ 2 [ZMOD 4]) := by
-  sorry
+  intro h
+  mod_cases hn : n % 4
+  · have :=
+    calc 0 ≡ 0 ^ 2 [ZMOD 4] := by numbers
+      _ ≡ n ^ 2 [ZMOD 4] := by rel [hn]
+      _ ≡ 2 [ZMOD 4] := by rel [h]
+    numbers at this
+  · have :=
+    calc 1 ≡ 1 ^ 2 [ZMOD 4] := by numbers
+         _ ≡ n ^ 2 [ZMOD 4] := by rel [hn]
+         _ ≡ 2 [ZMOD 4] := by rel [h]
+    numbers at this
+  · have :=
+    calc 0 ≡ 0 + 1 * 4 [ZMOD 4] := by extra
+         _ = 4 := by numbers
+         _ = 2 ^ 2 := by numbers
+         _ ≡ n ^ 2 [ZMOD 4] := by rel [hn]
+         _ ≡ 2 [ZMOD 4] := by rel [h]
+    numbers at this
+  · have :=
+    calc 1 ≡ 1 + 2 * 4 [ZMOD 4] := by extra
+         _ = 9 := by numbers
+         _ = 3 ^ 2 := by numbers
+         _ ≡ n ^ 2 [ZMOD 4] := by rel [hn]
+         _ ≡ 2 [ZMOD 4] := by rel [h]
+    numbers at this
 
 example : ¬ Prime 1 := by
   sorry
