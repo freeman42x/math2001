@@ -176,10 +176,22 @@ example (P Q : Prop) : ¬(P ∨ Q) ↔ (¬P ∧ ¬Q) := by
     obtain p | q := pq <;> contradiction
 
 example {P Q : α → Prop} (h1 : ∀ x, P x → Q x) (h2 : ∀ x, P x) : ∀ x, Q x := by
-  sorry
+  intro x
+  apply h1
+  apply h2
 
 example {P Q : α → Prop} (h : ∀ x, P x ↔ Q x) : (∃ x, P x) ↔ (∃ x, Q x) := by
-  sorry
+  constructor
+  · intro x
+    obtain ⟨x, px⟩ := x
+    use x
+    rw [← h]
+    apply px
+  · intro x
+    obtain ⟨x, qx⟩ := x
+    use x
+    rw [h]
+    apply qx
 
 example (P : α → β → Prop) : (∃ x y, P x y) ↔ ∃ y x, P x y := by
   sorry
