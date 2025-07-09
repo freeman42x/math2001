@@ -322,7 +322,30 @@ example (n : ℤ) : ¬(n ^ 2 ≡ 2 [ZMOD 4]) := by
     numbers at this
 
 example : ¬ Prime 1 := by
-  sorry
+    intro h
+    obtain ⟨h1, h2⟩ := h
+    numbers at h1
 
 example : Prime 97 := by
-  sorry
+  apply better_prime_test (T := 10)
+  · numbers
+  · numbers
+  intro m hm1 hm2
+  apply Nat.not_dvd_of_exists_lt_and_lt
+  interval_cases m
+  · use 48
+    constructor <;> numbers
+  · use 32
+    constructor <;> numbers
+  · use 24
+    constructor <;> numbers
+  · use 19
+    constructor <;> numbers
+  · use 16
+    constructor <;> numbers
+  · use 13
+    constructor <;> numbers
+  · use 12
+    constructor <;> numbers
+  · use 10
+    constructor <;> numbers
