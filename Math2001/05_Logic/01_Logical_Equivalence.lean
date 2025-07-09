@@ -103,16 +103,35 @@ example {P Q R : Prop} (h1 : P → Q) (h2 : P → R) (h3 : P) : Q ∧ R := by
     apply h3
 
 example (P : Prop) : ¬(P ∧ ¬ P) := by
-  sorry
+  intro h
+  obtain ⟨p, np⟩ := h
+  contradiction
 
 example {P Q : Prop} (h1 : P ↔ ¬ Q) (h2 : Q) : ¬ P := by
-  sorry
+  intro p
+  rw [h1] at p
+  contradiction
 
 example {P Q : Prop} (h1 : P ∨ Q) (h2 : Q → P) : P := by
-  sorry
+  obtain p | q := h1
+  · apply p
+  · apply h2 at q
+    apply q
 
 example {P Q R : Prop} (h : P ↔ Q) : (P ∧ R) ↔ (Q ∧ R) := by
-  sorry
+  constructor
+  · intro pr
+    obtain ⟨p, r⟩ := pr
+    constructor
+    · rw [← h]
+      apply p
+    · apply r
+  · intro qr
+    obtain ⟨q, r⟩ := qr
+    constructor
+    · rw [h]
+      apply q
+    · apply r
 
 example (P : Prop) : (P ∧ P) ↔ P := by
   sorry
