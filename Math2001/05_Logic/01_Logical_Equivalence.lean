@@ -91,10 +91,16 @@ example (P : α → Prop) : ¬ (∃ x, P x) ↔ ∀ x, ¬ P x := by
 
 
 example {P Q : Prop} (h : P ∧ Q) : P ∨ Q := by
-  sorry
+  obtain ⟨p, q⟩ := h
+  left
+  apply p
 
 example {P Q R : Prop} (h1 : P → Q) (h2 : P → R) (h3 : P) : Q ∧ R := by
-  sorry
+  constructor
+  · apply h1 at h3
+    apply h3
+  · apply h2 at h3
+    apply h3
 
 example (P : Prop) : ¬(P ∧ ¬ P) := by
   sorry
