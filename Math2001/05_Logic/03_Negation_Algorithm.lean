@@ -20,7 +20,9 @@ example (P Q : Prop) : ¬ (P ∧ Q) ↔ (¬ P ∨ ¬ Q) := by
       contradiction
     · left
       apply hP
-  · sorry
+  · intro npnq pq
+    obtain ⟨p, q⟩ := pq
+    obtain np | nq := npnq <;> contradiction
 
 example :
     ¬(∀ m : ℤ, m ≠ 2 → ∃ n : ℤ, n ^ 2 = m) ↔ ∃ m : ℤ, m ≠ 2 ∧ ∀ n : ℤ, n ^ 2 ≠ m :=
