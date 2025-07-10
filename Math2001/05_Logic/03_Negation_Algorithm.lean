@@ -74,13 +74,24 @@ example : ¬ (∃ n : ℕ, n ^ 2 = 2) := by
 
 
 example (P : Prop) : ¬ (¬ P) ↔ P := by
-  sorry
+  push_neg
+  constructor <;> intro p <;> apply p
 
 example (P Q : Prop) : ¬ (P → Q) ↔ (P ∧ ¬ Q) := by
-  sorry
+  push_neg
+  constructor <;> intro pnq <;> apply pnq
 
 example (P : α → Prop) : ¬ (∀ x, P x) ↔ ∃ x, ¬ P x := by
-  sorry
+  push_neg
+  constructor
+  · intro npxe
+    obtain ⟨x, npx⟩ := npxe
+    use x
+    apply npx
+  · intro npxe
+    obtain ⟨x, npx⟩ := npxe
+    use x
+    apply npx
 
 example : (¬ ∀ a b : ℤ, a * b = 1 → a = 1 ∨ b = 1)
     ↔ ∃ a b : ℤ, a * b = 1 ∧ a ≠ 1 ∧ b ≠ 1 :=
