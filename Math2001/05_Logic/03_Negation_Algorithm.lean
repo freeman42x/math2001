@@ -167,7 +167,13 @@ example {p : ℕ} (k : ℕ) (hk1 : k ≠ 1) (hkp : k ≠ p) (hk : k ∣ p) : ¬ 
     · apply hkp
 
 example : ¬ ∃ a : ℤ, ∀ n : ℤ, 2 * a ^ 3 ≥ n * a + 7 := by
-  sorry
+  push_neg
+  intro a
+  use 2 * a ^ 2
+  calc
+    2 * a ^ 3
+      = 2 * a ^ 2 * a := by ring
+    _ < 2 * a ^ 2 * a + 7 := by extra
 
 example {p : ℕ} (hp : ¬ Prime p) (hp2 : 2 ≤ p) : ∃ m, 2 ≤ m ∧ m < p ∧ m ∣ p := by
   have H : ¬ (∀ (m : ℕ), 2 ≤ m → m < p → ¬m ∣ p)
