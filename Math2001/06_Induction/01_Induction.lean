@@ -226,7 +226,26 @@ example : forall_sufficiently_large n : ℕ, (3:ℤ) ^ n ≥ 2 ^ n + 100 := by
 
 example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 + 4 := by
   dsimp
-  sorry
+  use 5
+  intro n hn
+  induction_from_starting_point n, hn with k hk ih
+  · numbers
+  · have hk' : k ^ 2 > 2 * k := by
+      calc
+        k ^ 2
+          = k * k := by ring
+        _ ≥ 5 * k := by rel [hk]
+        _ = 2 * k + 3 * k := by ring
+        _ > 2 * k := by extra
+    calc
+      2 ^ (k + 1)
+        = 2 * 2 ^ k := by ring
+      _ ≥ 2 * (k ^ 2 + 4) := by rel [ih]
+      _ = k ^ 2 + k ^ 2 + 8 := by ring
+      _ ≥ k ^ 2 + 2 * k + 8 := by rel [hk']
+      _ = (k + 1) ^ 2 + 7 := by ring
+      _ = (k + 1) ^ 2 + 4 + 3 := by ring
+      _ ≥ (k + 1) ^ 2 + 4 := by extra
 
 example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
   dsimp
