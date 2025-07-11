@@ -179,7 +179,35 @@ example (n : ℕ) : 6 ^ n ≡ 1 [ZMOD 7] ∨ 6 ^ n ≡ 6 [ZMOD 7] := by
 
 example (n : ℕ) :
     4 ^ n ≡ 1 [ZMOD 7] ∨ 4 ^ n ≡ 2 [ZMOD 7] ∨ 4 ^ n ≡ 4 [ZMOD 7] := by
-  sorry
+  simple_induction n with k ih
+  · left
+    calc
+      4 ^ 0
+        = 1 := by ring
+      _ ≡ 1 [ZMOD 7] := by extra
+  · obtain ih | ih | ih := ih
+    · right
+      right
+      calc
+        4 ^ (k + 1)
+          = 4 * 4 ^ k := by ring
+        _ ≡ 4 * 1 [ZMOD 7] := by rel [ih]
+    · left
+      calc
+        4 ^ (k + 1)
+          = 4 * 4 ^ k := by ring
+        _ ≡ 4 * 2 [ZMOD 7] := by rel [ih]
+        _ ≡ 1 + 1 * 7 [ZMOD 7] := by numbers
+        _ ≡ 1 [ZMOD 7] := by extra
+    · right
+      left
+      calc
+        4 ^ (k + 1)
+          = 4 * 4 ^ k := by ring
+        _ ≡ 4 * 4 [ZMOD 7] := by rel [ih]
+        _ ≡ 2 + 2 * 7 [ZMOD 7] := by numbers
+        _ ≡ 2 [ZMOD 7] := by extra
+
 
 example : forall_sufficiently_large n : ℕ, (3:ℤ) ^ n ≥ 2 ^ n + 100 := by
   dsimp
