@@ -156,7 +156,26 @@ example (n : ℕ) : 5 ^ n ≡ 1 [ZMOD 8] ∨ 5 ^ n ≡ 5 [ZMOD 8] := by
         _ ≡ 1 [ZMOD 8] := by extra
 
 example (n : ℕ) : 6 ^ n ≡ 1 [ZMOD 7] ∨ 6 ^ n ≡ 6 [ZMOD 7] := by
-  sorry
+  simple_induction n with k ih
+  · left
+    calc
+      6 ^ 0
+        = 1 := by ring
+      _ ≡ 1 [ZMOD 7] := by extra
+  · obtain ih | ih := ih
+    · right
+      calc
+        6 ^ (k + 1)
+          = 6 * 6 ^ k := by ring
+        _ ≡ 6 * 1 [ZMOD 7] := by rel [ih]
+    · left
+      calc
+        6 ^ (k + 1)
+          = 6 * 6 ^ k := by ring
+        _ ≡ 6 * 6 [ZMOD 7] := by rel [ih]
+        _ ≡ 1 + 5 * 7 [ZMOD 7] := by numbers
+        _ ≡ 1 [ZMOD 7] := by extra
+
 
 example (n : ℕ) :
     4 ^ n ≡ 1 [ZMOD 7] ∨ 4 ^ n ≡ 2 [ZMOD 7] ∨ 4 ^ n ≡ 4 [ZMOD 7] := by
