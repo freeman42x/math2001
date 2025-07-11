@@ -108,7 +108,15 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
 
 
 example (n : ℕ) : 3 ^ n ≥ n ^ 2 + n + 1 := by
-  sorry
+  simple_induction n with k ih
+  · numbers
+  · calc
+      3 ^ (k + 1)
+        = 3 * 3 ^ k := by ring
+      _ ≥ 3 * (k ^ 2 + k + 1) := by rel [ih]
+      _ = k ^ 2 + 2 * k + 1 + 2 * k ^ 2 + (k + 1) + 1 := by ring
+      _ = (k + 1) ^ 2 + 2 * k ^ 2 + (k + 1) + 1 := by ring
+      _ ≥ (k + 1) ^ 2 + (k + 1) + 1 := by extra
 
 example {a : ℝ} (ha : -1 ≤ a) (n : ℕ) : (1 + a) ^ n ≥ 1 + n * a := by
   sorry
