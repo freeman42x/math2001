@@ -119,7 +119,20 @@ example (n : ℕ) : 3 ^ n ≥ n ^ 2 + n + 1 := by
       _ ≥ (k + 1) ^ 2 + (k + 1) + 1 := by extra
 
 example {a : ℝ} (ha : -1 ≤ a) (n : ℕ) : (1 + a) ^ n ≥ 1 + n * a := by
-  sorry
+  have h1 : 0 ≤ 1 + a := by addarith [ha]
+  simple_induction n with k ih
+  · calc
+      (1 + a) ^ 0
+        = 1 := by ring
+      _ = 1 + 0 := by ring
+      _ = 1 + 0 * a := by ring
+      _ ≥ 1 + 0 * a := by extra
+  · calc
+      (1 + a) ^ (k + 1)
+        = (1 + a) * (1 + a) ^ k := by ring
+      _ ≥ (1 + a) * (1 + k * a) := by rel [ih]
+      _ = 1 + (k + 1) * a + k * a ^ 2 := by ring
+      _ ≥ 1 + (k + 1) * a := by extra
 
 example (n : ℕ) : 5 ^ n ≡ 1 [ZMOD 8] ∨ 5 ^ n ≡ 5 [ZMOD 8] := by
   sorry
