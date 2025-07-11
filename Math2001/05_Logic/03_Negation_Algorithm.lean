@@ -95,7 +95,13 @@ example (P : α → Prop) : ¬ (∀ x, P x) ↔ ∃ x, ¬ P x := by
 
 example : (¬ ∀ a b : ℤ, a * b = 1 → a = 1 ∨ b = 1)
     ↔ ∃ a b : ℤ, a * b = 1 ∧ a ≠ 1 ∧ b ≠ 1 :=
-  sorry
+  calc
+    (¬ ∀ a b : ℤ, a * b = 1 → a = 1 ∨ b = 1)
+    ↔ ¬ (∀ a b : ℤ, a * b = 1 → a = 1 ∨ b = 1) := by ring
+  _ ↔ ∃ a : ℤ, ¬(∀ b : ℤ, a * b = 1 → a = 1 ∨ b = 1) := by rel [not_forall]
+  _ ↔ ∃ a b : ℤ, ¬(a * b = 1 → a = 1 ∨ b = 1) := by rel [not_forall]
+  _ ↔ ∃ a b : ℤ, a * b = 1 ∧ ¬(a = 1 ∨ b = 1) := by rel [not_imp]
+  _ ↔ ∃ a b : ℤ, a * b = 1 ∧ a ≠ 1 ∧ b ≠ 1 := by rel [not_or]
 
 example : (¬ ∃ x : ℝ, ∀ y : ℝ, y ≤ x) ↔ (∀ x : ℝ, ∃ y : ℝ, y > x) :=
   sorry
