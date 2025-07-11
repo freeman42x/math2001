@@ -135,7 +135,25 @@ example {a : ℝ} (ha : -1 ≤ a) (n : ℕ) : (1 + a) ^ n ≥ 1 + n * a := by
       _ ≥ 1 + (k + 1) * a := by extra
 
 example (n : ℕ) : 5 ^ n ≡ 1 [ZMOD 8] ∨ 5 ^ n ≡ 5 [ZMOD 8] := by
-  sorry
+  simple_induction n with k ih
+  · left
+    calc
+      (5 : ℤ) ^ 0
+        = 1 := by ring
+      _ ≡ 1 [ZMOD 8] := by extra
+  · obtain ih | ih := ih
+    · right
+      calc
+        (5 : ℤ) ^ (k + 1)
+          = 5 * 5 ^ k := by ring
+        _ ≡ 5 * 1 [ZMOD 8] := by rel [ih]
+    · left
+      calc
+        (5 : ℤ) ^ (k + 1)
+          = 5 * 5 ^ k := by ring
+        _ ≡ 5 * 5 [ZMOD 8] := by rel [ih]
+        _ = 1 + 8 * 3 := by ring
+        _ ≡ 1 [ZMOD 8] := by extra
 
 example (n : ℕ) : 6 ^ n ≡ 1 [ZMOD 7] ∨ 6 ^ n ≡ 6 [ZMOD 7] := by
   sorry
