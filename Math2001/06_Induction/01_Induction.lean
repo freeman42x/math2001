@@ -22,11 +22,21 @@ example (n : ℕ) : 2 ^ n ≥ n + 1 := by
 example (n : ℕ) : Even n ∨ Odd n := by
   simple_induction n with k IH
   · -- base case
-    sorry
+    left
+    dsimp [Even]
+    use 0
+    numbers
   · -- inductive step
     obtain ⟨x, hx⟩ | ⟨x, hx⟩ := IH
-    · sorry
-    · sorry
+    · right
+      dsimp [Odd]
+      use x
+      rw [hx]
+    · left
+      dsimp [Even]
+      use x + 1
+      rw [hx]
+      ring
 
 example {a b d : ℤ} (h : a ≡ b [ZMOD d]) (n : ℕ) : a ^ n ≡ b ^ n [ZMOD d] := by
   sorry
