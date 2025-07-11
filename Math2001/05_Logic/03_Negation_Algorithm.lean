@@ -104,7 +104,12 @@ example : (¬ ∀ a b : ℤ, a * b = 1 → a = 1 ∨ b = 1)
   _ ↔ ∃ a b : ℤ, a * b = 1 ∧ a ≠ 1 ∧ b ≠ 1 := by rel [not_or]
 
 example : (¬ ∃ x : ℝ, ∀ y : ℝ, y ≤ x) ↔ (∀ x : ℝ, ∃ y : ℝ, y > x) :=
-  sorry
+  calc
+      (¬ ∃ x : ℝ, ∀ y : ℝ, y ≤ x)
+    ↔ ∀ x : ℝ, ¬ (∀ y : ℝ, y ≤ x) := by rel [not_exists]
+  _ ↔ ∀ x : ℝ, ∃ y : ℝ, ¬ (y ≤ x) := by rel [not_forall]
+  _ ↔ (∀ x : ℝ, ∃ y : ℝ, x < y) := by simp_rw [not_le]
+  _ ↔ (∀ x : ℝ, ∃ y : ℝ, y > x) := by rfl
 
 example : ¬ (∃ m : ℤ, ∀ n : ℤ, m = n + 5) ↔ ∀ m : ℤ, ∃ n : ℤ, m ≠ n + 5 :=
   sorry
