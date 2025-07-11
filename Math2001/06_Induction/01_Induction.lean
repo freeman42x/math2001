@@ -65,7 +65,7 @@ example (n : ℕ) : 4 ^ n ≡ 1 [ZMOD 15] ∨ 4 ^ n ≡ 4 [ZMOD 15] := by
     · right
       calc (4:ℤ) ^ (k + 1) = 4 * 4 ^ k := by ring
         _ ≡ 4 * 1 [ZMOD 15] := by rel [hk]
-        _ = 4 := by numbers
+        _ ≡ 4 [ZMOD 15] := by numbers
     · left
       calc (4:ℤ) ^ (k + 1) = 4 * 4 ^ k := by ring
         _ ≡ 4 * 4 [ZMOD 15] := by rel [hk]
@@ -90,9 +90,18 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 := by
   intro n hn
   induction_from_starting_point n, hn with k hk IH
   · -- base case
-    sorry
+    numbers
   · -- inductive step
-    sorry
+    calc
+      2 ^ (k + 1)
+        = 2 * (2 ^ k) := by ring
+      _ ≥ 2 * (k ^ 2) := by rel [IH]
+      _ = k ^ 2 + k * k := by ring
+      _ ≥ k ^ 2 + 4 * k := by rel [hk]
+      _ = k ^ 2 + 2 * k + 2 * k := by ring
+      _ ≥ k ^ 2 + 2 * k + 2 * 4 := by rel [hk]
+      _ = (k + 1) ^ 2 + 7 := by ring
+      _ ≥ (k + 1) ^ 2 := by extra
 
 
 /-! # Exercises -/
