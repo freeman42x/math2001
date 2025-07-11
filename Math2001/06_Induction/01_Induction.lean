@@ -39,7 +39,21 @@ example (n : ℕ) : Even n ∨ Odd n := by
       ring
 
 example {a b d : ℤ} (h : a ≡ b [ZMOD d]) (n : ℕ) : a ^ n ≡ b ^ n [ZMOD d] := by
-  sorry
+  simple_induction n with k IH
+  · calc
+      a ^ 0
+        = 1 := by ring
+      _ ≡ 1 [ZMOD d] := by extra
+      _ = b ^ 0 := by ring
+  · obtain ⟨x, hx⟩ := IH
+    dsimp [Int.ModEq] at *
+    obtain ⟨y, hy⟩ := h
+    use a * x + b ^ k * y
+    calc
+      a ^ (k + 1) - b ^ (k + 1)
+        = a * (a ^ k - b ^ k) + b ^ k * (a - b) := by ring
+      _ = a * (d * x) + b ^ k * (d * y) := by rw [hx, hy]
+      _ = d * (a * x + b ^ k * y) := by ring
 
 example (n : ℕ) : 4 ^ n ≡ 1 [ZMOD 15] ∨ 4 ^ n ≡ 4 [ZMOD 15] := by
   simple_induction n with k IH
