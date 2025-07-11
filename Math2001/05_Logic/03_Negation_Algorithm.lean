@@ -158,7 +158,13 @@ example : ¬ Int.Even 7 := by
 example {p : ℕ} (k : ℕ) (hk1 : k ≠ 1) (hkp : k ≠ p) (hk : k ∣ p) : ¬ Prime p := by
   dsimp [Prime]
   push_neg
-  sorry
+  right
+  use k
+  constructor
+  · apply hk
+  · constructor
+    · apply hk1
+    · apply hkp
 
 example : ¬ ∃ a : ℤ, ∀ n : ℤ, 2 * a ^ 3 ≥ n * a + 7 := by
   sorry
