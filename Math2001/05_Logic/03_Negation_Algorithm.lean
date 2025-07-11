@@ -144,7 +144,16 @@ example : ¬ (∃ t : ℝ, t ≤ 4 ∧ t ≥ 5) := by
 example : ¬ Int.Even 7 := by
   dsimp [Int.Even]
   push_neg
-  sorry
+  intro k
+  obtain hn | hn := le_or_succ_le k 3
+  · apply ne_of_gt
+    calc
+      2 * k ≤ 2 * 3 := by rel [hn]
+      _ < 7 := by numbers
+  · apply ne_of_lt
+    calc
+      7 < 2 * 4 := by numbers
+      _ ≤ 2 * k := by rel [hn]
 
 example {p : ℕ} (k : ℕ) (hk1 : k ≠ 1) (hkp : k ≠ p) (hk : k ∣ p) : ¬ Prime p := by
   dsimp [Prime]
