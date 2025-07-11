@@ -125,11 +125,21 @@ example : ¬ (∃ m : ℤ, ∀ n : ℤ, m = n + 5) ↔ ∀ m : ℤ, ∃ n : ℤ,
 
 example : ¬ (∀ x : ℝ, x ^ 2 ≥ x) := by
   push_neg
-  sorry
+  use 0.5
+  numbers
 
 example : ¬ (∃ t : ℝ, t ≤ 4 ∧ t ≥ 5) := by
   push_neg
-  sorry
+  intro t
+  by_cases ht : t < 5
+  · right
+    apply ht
+  · left
+    rw [not_lt] at ht
+    calc
+      4 < 5 := by numbers
+      _ ≤ t := by rel [ht]
+
 
 example : ¬ Int.Even 7 := by
   dsimp [Int.Even]
