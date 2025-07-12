@@ -210,7 +210,16 @@ def S : ℕ → ℚ
   | n + 1 => S n + 1 / 2 ^ (n + 1)
 
 example (n : ℕ) : S n = 2 - 1 / 2 ^ n := by
-  sorry
+  simple_induction n with k ih
+  · calc
+      S 0
+        = 1 := by rw [S]
+      _ = 2 - 1 / 2 ^ 0 := by numbers
+  · calc
+      S (k + 1)
+        = S k + 1 / 2 ^ (k + 1) := by rw [S]
+      _ = 2 - 1 / 2 ^ k + 1 / 2 ^ (k + 1) := by rw [ih]
+      _ = 2 - 1 / 2 ^ (k + 1) := by ring
 
 example (n : ℕ) : 0 < n ! := by
   sorry
