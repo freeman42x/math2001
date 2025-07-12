@@ -247,4 +247,15 @@ example {n : ℕ} (hn : 2 ≤ n) : Nat.Even (n !) := by
       _ = 2 * ((k + 1) * m) := by ring
 
 example (n : ℕ) : (n + 1) ! ≤ (n + 1) ^ n := by
-  sorry
+  simple_induction n with k ih
+  · rw [factorial, factorial]
+    numbers
+  · have h1 : k + 1 ≤ k + 1 + 1 := by extra
+    have h2 : (k + 1) ^ k ≤ (k + 1 + 1) ^ k :=
+      Nat.pow_le_pow_of_le_left h1 k
+    calc
+      (k + 1 + 1) !
+        = (k + 1 + 1) * (k + 1) ! := by rw [factorial]
+      _ ≤ (k + 1 + 1) * (k + 1) ^ k := by rel [ih]
+      _ ≤ (k + 1 + 1) * (k + 1 + 1) ^ k := by rel [h2]
+      _ = (k + 1 + 1) ^ (k + 1) := by ring
