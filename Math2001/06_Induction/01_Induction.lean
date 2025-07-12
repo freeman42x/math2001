@@ -249,7 +249,25 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 2 + 4 := by
 
 example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
   dsimp
-  sorry
+  use 10
+  intro n hn
+  induction_from_starting_point n, hn with k hk ih
+  · numbers
+  · calc
+      2 ^ (k + 1)
+        = 2 * 2 ^ k := by ring
+      _ ≥ 2 * k ^ 3 := by rel [ih]
+      _ = k ^ 3 + k ^ 3 := by ring
+      _ = k ^ 3 + k * k ^ 2 := by ring
+      _ ≥ k ^ 3 + 10 * k ^ 2 := by rel [hk]
+      _ = k ^ 3 + 3 * k ^ 2 + 7 * k * k := by ring
+      _ ≥ k ^ 3 + 3 * k ^ 2 + 7 * 10 * k := by rel [hk]
+      _ = k ^ 3 + 3 * k ^ 2 + 70 * k := by ring
+      _ = k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * k := by ring
+      _ ≥ k ^ 3 + 3 * k ^ 2 + 3 * k + 67 * 10 := by rel [hk]
+      _ = k ^ 3 + 3 * k ^ 2 + 3 * k + 1 + 669 := by ring
+      _ ≥ k ^ 3 + 3 * k ^ 2 + 3 * k + 1 := by extra
+      _ = (k + 1) ^ 3 := by ring
 
 theorem Odd.pow {a : ℕ} (ha : Odd a) (n : ℕ) : Odd (a ^ n) := by
   sorry
