@@ -104,12 +104,37 @@ example (n : ℕ) : ∀ d, 1 ≤ d → d ≤ n → d ∣ n ! := by
     intro d hk1 hk
     obtain hk | hk : d = k + 1 ∨ d < k + 1 := eq_or_lt_of_le hk
     · -- case 1: `d = k + 1`
-      sorry
+      use (k !)
+      calc
+        (k + 1) !
+          = (k + 1) * k ! := by rw [factorial]
+        _ = d * k ! := by rw [← hk]
     · -- case 2: `d < k + 1`
-      sorry
+      have h1 : d ≤ k := Nat.lt_succ_iff.mp hk
+      have h2 : d ∣ k ! := IH d hk1 h1
+      obtain ⟨x, hx⟩ := h2
+      dsimp [(· ∣ ·)]
+      use (k + 1) * x
+      calc
+        (k + 1) !
+          = (k + 1) * k ! := by rw [factorial]
+        _ = (k + 1) * (d * x) := by rw [hx]
+        _ = d * ((k + 1) * x) := by ring
 
 example (n : ℕ) : (n + 1)! ≥ 2 ^ n := by
-  sorry
+  simple_induction n with k ih
+  · calc
+      (0 + 1) !
+        = (0 + 1) * 1 := by rw [factorial, factorial]
+      _ = 1 := by numbers
+      _ ≥ 2 ^ 0 := by numbers
+  · calc
+      (k + 1 + 1) !
+        = (k + 1 + 1) * (k + 1) ! := by rw [factorial]
+      _ ≥ (k + 1 + 1) * 2 ^ k := by rel [ih]
+      _ = k * 2 ^ k + 2 * 2 ^ k := by ring
+      _ ≥ 2 * 2 ^ k := by extra
+      _ = 2 ^ (k + 1) := by ring
 
 
 /-! # Exercises -/
