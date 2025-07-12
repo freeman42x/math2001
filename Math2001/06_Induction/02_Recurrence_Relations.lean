@@ -178,7 +178,16 @@ def y : ℕ → ℕ
   | n + 1 => (y n) ^ 2
 
 example (n : ℕ) : y n = 2 ^ (2 ^ n) := by
-  sorry
+  simple_induction n with k ih
+  · calc
+      y 0
+        = 2 := by rw [y]
+      _ = 2 ^ 2 ^ 0 := by numbers
+  · calc
+      y (k + 1)
+        = (y k) ^ 2 := by rw [y]
+      _ = (2 ^ 2 ^ k) ^ 2 := by rw [ih]
+      _ = 2 ^ 2 ^ (k + 1) := by ring
 
 def B : ℕ → ℚ
   | 0 => 0
