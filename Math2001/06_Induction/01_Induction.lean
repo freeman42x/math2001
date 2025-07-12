@@ -270,7 +270,23 @@ example : forall_sufficiently_large n : ℕ, 2 ^ n ≥ n ^ 3 := by
       _ = (k + 1) ^ 3 := by ring
 
 theorem Odd.pow {a : ℕ} (ha : Odd a) (n : ℕ) : Odd (a ^ n) := by
-  sorry
+  dsimp [Odd] at *
+  simple_induction n with k ih
+  · use 0
+    calc
+      a ^ 0
+        = 1 := by ring
+      _ = 2 * 0 + 1 := by ring
+  · obtain ⟨p, hp⟩ := ha
+    obtain ⟨q, hq⟩ := ih
+    use a * q + p
+    calc
+      a ^ (k + 1)
+        = a * a ^ k := by ring
+      _ = a * (2 * q + 1) := by rw [hq]
+      _ = 2 * a * q + a := by ring
+      _ = 2 * a * q + (2 * p + 1) := by rw [hp]
+      _ = 2 * (a * q + p) + 1 := by ring
 
 theorem Nat.even_of_pow_even {a n : ℕ} (ha : Even (a ^ n)) : Even a := by
   sorry
