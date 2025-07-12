@@ -289,4 +289,7 @@ theorem Odd.pow {a : ℕ} (ha : Odd a) (n : ℕ) : Odd (a ^ n) := by
       _ = 2 * (a * q + p) + 1 := by ring
 
 theorem Nat.even_of_pow_even {a n : ℕ} (ha : Even (a ^ n)) : Even a := by
-  sorry
+  dsimp [Even] at *
+  simple_induction n with k ih
+  · sorry
+  · sorry
