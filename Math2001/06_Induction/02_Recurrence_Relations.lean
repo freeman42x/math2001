@@ -162,7 +162,16 @@ example (n : ℕ) : Odd (c n) := by
       _ = 2 * (3 * m - 4) + 1 := by ring
 
 example (n : ℕ) : c n = 2 * 3 ^ n + 5 := by
-  sorry
+  simple_induction n with k ih
+  · calc
+      c 0
+        = 7 := by rw [c]
+      _ = 2 * 3 ^ 0 + 5 := by numbers
+  · calc
+      c (k + 1)
+        = 3 * c k - 10 := by rw [c]
+      _ = 3 * (2 * 3 ^ k + 5) - 10 := by rw [ih]
+      _ = 2 * 3 ^ (k + 1) + 5 := by ring
 
 def y : ℕ → ℕ
   | 0 => 2
