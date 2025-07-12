@@ -222,10 +222,29 @@ example (n : ℕ) : S n = 2 - 1 / 2 ^ n := by
       _ = 2 - 1 / 2 ^ (k + 1) := by ring
 
 example (n : ℕ) : 0 < n ! := by
-  sorry
+  simple_induction n with k ih
+  · calc
+      0 < 1 := by extra
+      _ = 0 ! := by rw [factorial]
+  · calc
+      (k + 1) !
+        = (k + 1) * k ! := by rw [factorial]
+      _ > (k + 1) * 0 := by rel [ih]
+      _ = 0 := by ring
 
 example {n : ℕ} (hn : 2 ≤ n) : Nat.Even (n !) := by
-  sorry
+  dsimp [Nat.Even]
+  induction_from_starting_point n, hn with k hk ih
+  · rw [factorial, factorial, factorial]
+    use 1
+    numbers
+  · obtain ⟨m, hm⟩ := ih
+    use (k + 1) * m
+    calc
+      (k + 1) !
+        = (k + 1) * k ! := by rw [factorial]
+      _ = (k + 1) * (2 * m) := by rw [hm]
+      _ = 2 * ((k + 1) * m) := by ring
 
 example (n : ℕ) : (n + 1) ! ≤ (n + 1) ^ n := by
   sorry
