@@ -164,7 +164,20 @@ def c : ℕ → ℤ
   | n + 2 => 4 * c n
 
 example (n : ℕ) : c n = 2 * 2 ^ n + (-2) ^ n := by
-  sorry
+  two_step_induction n with h ih1 ih2
+  · calc
+      c 0
+        = 3 := by rw [c]
+      _ = 2 * 2 ^ 0 + (-2) ^ 0 := by numbers
+  · calc
+      c 1
+        = 2 := by rw [c]
+      _ = 2 * 2 ^ 1 + (-2) ^ 1 := by numbers
+  · calc
+      c (h + 1 + 1)
+        = 4 * c h := by rw [c]
+      _ = 4 * (2 * 2 ^ h + (-2) ^ h) := by rw [ih1]
+      _ = 2 * 2 ^ (h + 1 + 1) + (-2) ^ (h + 1 + 1) := by ring
 
 def t : ℕ → ℤ
   | 0 => 5
@@ -172,7 +185,20 @@ def t : ℕ → ℤ
   | n + 2 => 2 * t (n + 1) - t n
 
 example (n : ℕ) : t n = 2 * n + 5 := by
-  sorry
+  two_step_induction n with k ih1 ih2
+  · calc
+      t 0
+        = 5 := by rw [t]
+      _ = 2 * 0 + 5 := by ring
+  · calc
+      t 1
+        = 7 := by rw [t]
+      _ = 2 * 1 + 5 := by ring
+  · calc
+      t (k + 1 + 1)
+        = 2 * t (k + 1) - t k := by rw [t]
+      _ = 2 * (2 * (k + 1) + 5) - (2 * k + 5) := by rw [ih1, ih2]
+      _ = 2 * (k + 1 + 1) + 5 := by ring
 
 def q : ℕ → ℤ
   | 0 => 1
