@@ -227,7 +227,21 @@ def s : ℕ → ℤ
   | n + 2 => 2 * s (n + 1) + 3 * s n
 
 example (m : ℕ) : s m ≡ 2 [ZMOD 5] ∨ s m ≡ 3 [ZMOD 5] := by
-  sorry
+  two_step_induction m with k ih1 ih2
+  · left
+    rw [s]
+    numbers
+  · right
+    rw [s]
+    numbers
+  · obtain ih1 | ih1 := ih1
+    · obtain ih2 | ih2 := ih2
+      · calc
+          s (k + 1 + 1)
+            = 2 * s (k + 1) + 3 * s k := by rw [s]
+          _ ≡ 2 * 2 + 3 * 2 [ZMOD 5] := by rel [ih1, ih2]
+      · sorry
+    · sorry
 
 def p : ℕ → ℤ
   | 0 => 2
@@ -243,7 +257,19 @@ def r : ℕ → ℤ
   | n + 2 => 2 * r (n + 1) + r n
 
 example : forall_sufficiently_large n : ℕ, r n ≥ 2 ^ n := by
-  sorry
+  use 7
+  intro n hn
+  two_step_induction_from_starting_point n, hn with k hk ih1 ih2
+  · calc r 7 = 140 := by rfl
+           _ ≥ 2 ^ 7 := by numbers
+  · calc r 8 = 338 := by rfl
+           _ ≥ 2 ^ 8 := by numbers
+  · calc
+      r (k + 1 + 1)
+        = 2 * r (k + 1) + r k := by rw [r]
+      _ ≥ 2 * (2 ^ (k + 1)) + 2 ^ k := by rel [ih1, ih2]
+      _ ≥ 2 * (2 ^ (k + 1)) := by extra
+      _ = 2 ^ (k + 1 + 1) := by ring
 
 example : forall_sufficiently_large n : ℕ,
     (0.4:ℚ) * 1.6 ^ n < F n ∧ F n < (0.5:ℚ) * 1.7 ^ n := by
