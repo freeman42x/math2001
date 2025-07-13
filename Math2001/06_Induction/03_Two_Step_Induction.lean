@@ -206,7 +206,20 @@ def q : ℕ → ℤ
   | n + 2 => 2 * q (n + 1) - q n + 6 * n + 6
 
 example (n : ℕ) : q n = (n:ℤ) ^ 3 + 1 := by
-  sorry
+  two_step_induction n with k ih1 ih2
+  · calc
+      q 0
+        = 1 := by rw [q]
+      _ = 0 ^ 3 + 1 := by numbers
+  · calc
+      q 1
+        = 2 := by rw [q]
+      _ = 1 ^ 3 + 1 := by ring
+  · calc
+      q (k + 1 + 1)
+        = 2 * q (k + 1) - q k + 6 * k + 6 := by rw [q]
+      _ = 2 * ((k + 1) ^ 3 + 1) - (k ^ 3 + 1) + 6 * k + 6 := by rw [ih1, ih2]
+      _ = (k + 1 + 1) ^ 3 + 1 := by ring
 
 def s : ℕ → ℤ
   | 0 => 2
