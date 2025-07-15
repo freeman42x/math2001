@@ -105,4 +105,16 @@ termination_by _ a b => a + b
 
 
 example (a : ℕ) : pascal a 1 = a + 1 := by
-  sorry
+  simple_induction a with k ih
+  · calc
+      pascal 0 1
+        = 1 := by rw [pascal]
+      _ = 0 + 1 := by ring
+  · have h : pascal (k + 1) 1 = pascal (k + 1) 0 + pascal k 1 := by
+      conv =>
+      lhs
+      rw [pascal]
+    calc
+     pascal (k + 1) 1 = pascal (k + 1) 0 + pascal k (0 + 1) := by rw [h]
+                    _ = 1 + (k + 1) := by rw [pascal, ih]
+                    _ = (k + 1) + 1 := by ring
