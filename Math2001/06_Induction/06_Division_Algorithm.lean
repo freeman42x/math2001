@@ -134,7 +134,21 @@ def T (n : ℤ) : ℤ :=
 termination_by T n => 3 * n - 1
 
 theorem T_eq (n : ℤ) : T n = n ^ 2 := by
-  sorry
+  rw [T]
+  split_ifs with h1 h2 <;> push_neg at *
+  · have ih1 := T_eq (1 - n)
+    rw [ih1]
+    ring
+  · have ih2 := T_eq (-n)
+    rw [ih2]
+    ring
+  · have h4 : n = 0 := by
+      apply le_antisymm
+      · exact h1
+      · addarith [h2]
+    rw [h4]
+    numbers
+termination_by _ n => 3 * n - 1
 
 theorem uniqueness (a b : ℤ) (h : 0 < b) {r s : ℤ}
     (hr : 0 ≤ r ∧ r < b ∧ a ≡ r [ZMOD b])
