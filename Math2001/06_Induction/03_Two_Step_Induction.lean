@@ -227,21 +227,45 @@ def s : ℕ → ℤ
   | n + 2 => 2 * s (n + 1) + 3 * s n
 
 example (m : ℕ) : s m ≡ 2 [ZMOD 5] ∨ s m ≡ 3 [ZMOD 5] := by
-  two_step_induction m with k ih1 ih2
-  · left
-    rw [s]
-    numbers
-  · right
-    rw [s]
-    numbers
-  · obtain ih1 | ih1 := ih1
-    · obtain ih2 | ih2 := ih2
+  have h1 : ∀ n, s (2 * n) ≡ 2 [ZMOD 5] ∧ s (2 * n + 1) ≡ 3 [ZMOD 5] := by
+    intro n
+    simple_induction n with k ih
+    · constructor
       · calc
-          s (k + 1 + 1)
-            = 2 * s (k + 1) + 3 * s k := by rw [s]
-          _ ≡ 2 * 2 + 3 * 2 [ZMOD 5] := by rel [ih1, ih2]
-      · sorry
-    · sorry
+          s (2 * 0)
+            = 2 := by rw [s]
+          _ ≡ 2 [ZMOD 5] := by extra
+      · calc
+          s (2 * 0 + 1)
+            = 3 := by rw [s]
+          _ ≡ 3 [ZMOD 5] := by extra
+    · obtain ⟨ih1, ih2⟩ := ih
+      · constructor
+        · have h : 2 * (k + 1) = 2 * k + 2 := rfl
+          calc
+            s (2 * (k + 1))
+              = s (2 * k + 2) := by rw [h]
+            _ = 2 * s (2 * k + 1) + 3 * s (2 * k) := by rw [s]
+            _ ≡ 2 * 3 + 3 * 2 [ZMOD 5] := by rel [ih1, ih2]
+            _ ≡ 2 + 2 * 5 [ZMOD 5] := by numbers
+            _ ≡ 2 [ZMOD 5] := by extra
+        · have h : 2 * (k + 1) + 1 = 2 * k + 1 + 2 := rfl
+          calc
+            s (2 * (k + 1) + 1)
+              = s (2 * k + 1 + 2) := by rw [h]
+            _ = 2 * s (2 * k + 1 + 1) + 3 * s (2 * k + 1) := by rw [s]
+            _ = 2 * (2 * s (2 * k + 1) + 3 * s (2 * k)) + 3 * s (2 * k + 1) := by rw [s]
+            _ = 4 * s (2 * k + 1) + 6 * s (2 * k) + 3 * s (2 * k + 1) := by ring
+            _ = 7 * s (2 * k + 1) + 6 * s (2 * k) := by ring
+            _ ≡ 7 * 3 + 6 * 2 [ZMOD 5] := by rel [ih1, ih2]
+            _ ≡ 3 + 6 * 5 [ZMOD 5] := by numbers
+            _ ≡ 3 [ZMOD 5] := by extra
+  obtain h2 | h3 := Int.even_or_odd m
+  · dsimp [Int.Even] at h2
+    obtain ⟨n, h2n⟩ := h2
+    obtain ⟨h11, h12⟩ := h1 m
+    sorry
+  · sorry
 
 def p : ℕ → ℤ
   | 0 => 2
