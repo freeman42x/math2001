@@ -362,7 +362,23 @@ example : ∀ (f : ℤ → ℤ), Surjective f → Surjective (fun x ↦ 2 * f x)
   sorry
 
 example : ¬ ∀ (f : ℤ → ℤ), Surjective f → Surjective (fun x ↦ 2 * f x) := by
-  sorry
+  push_neg
+  use fun x ↦ x
+  constructor
+  · dsimp [Surjective]
+    intro y
+    use y
+    rfl
+  · dsimp [Surjective]
+    push_neg
+    use 1
+    intro a
+    obtain h | h := le_or_succ_le a 0
+    · addarith [h]
+    · apply ne_of_gt
+      calc
+        2 * a ≥ 2 * 1 := by rel [h]
+            _ > 1 := by numbers
 
 example : ∀ c : ℝ, Surjective (fun x ↦ c * x) := by
   sorry
