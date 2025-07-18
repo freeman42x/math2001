@@ -182,7 +182,10 @@ example {f : X → Y} (hf : Surjective f) {g : Y → Z} (hg : Surjective g) :
     _ = z := by rw [hy]
 
 example {f : X → Y} (hf : Surjective f) : ∃ g : Y → X, f ∘ g = id := by
-  sorry
+  choose g hg using hf
+  use g
+  ext x
+  exact hg x
 
 example {f : X → Y} {g : Y → X} (h : Inverse f g) : Inverse g f := by
   sorry
