@@ -298,7 +298,9 @@ def l : White → Musketeer
   | jack => porthos
 
 example : Injective l := by
-  sorry
+  dsimp [Injective]
+  intro a1 a2 ha
+  cases a1 <;> cases a2 <;> exhaust
 
 example : ¬ Injective l := by
   sorry
@@ -308,7 +310,11 @@ example : Surjective l := by
   sorry
 
 example : ¬ Surjective l := by
-  sorry
+  dsimp [Surjective]
+  push_neg
+  use athos
+  intro a
+  cases a <;> exhaust
 
 example (f : X → Y) : Injective f ↔ ∀ x1 x2 : X, x1 ≠ x2 → f x1 ≠ f x2 := by
   sorry
