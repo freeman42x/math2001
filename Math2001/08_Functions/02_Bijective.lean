@@ -235,7 +235,34 @@ example : ∀ f : Subatomic → Subatomic, Injective f → Bijective f := by
   · dsimp [Surjective]
     dsimp [Injective] at h
     intro b
-    sorry
+    cases helec1 : f .electron with
+    | proton =>
+      cases helec2 : f .proton with
+      | proton =>
+        exfalso
+        sorry
+      | neutron =>
+        cases helec3 : f .neutron with
+        | proton =>
+          exfalso
+          sorry
+        | neutron =>
+          exfalso
+          sorry
+        | electron =>
+          cases b with
+          | proton =>
+            sorry
+          | neutron =>
+            sorry
+          | electron =>
+            sorry
+      | electron =>
+        sorry
+    | neutron =>
+      sorry
+    | electron =>
+      sorry
 
 example : ∀ f : Element → Element, Injective f → Bijective f := by
   sorry
