@@ -229,8 +229,13 @@ example : ¬ Bijective e := by
 
 
 example : ∀ f : Subatomic → Subatomic, Injective f → Bijective f := by
-  sorry
-
+  intro f h
+  constructor
+  · exact h
+  · dsimp [Surjective]
+    dsimp [Injective] at h
+    intro b
+    sorry
 
 example : ∀ f : Element → Element, Injective f → Bijective f := by
   sorry
