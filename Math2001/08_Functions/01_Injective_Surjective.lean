@@ -347,7 +347,16 @@ example : ∀ (f : ℚ → ℚ), Injective f → Injective (fun x ↦ f x + x) :
   sorry
 
 example : ¬ ∀ (f : ℚ → ℚ), Injective f → Injective (fun x ↦ f x + x) := by
-  sorry
+  push_neg
+  use fun x ↦ -x
+  constructor
+  · dsimp [Injective]
+    intro x1 x2 hx
+    addarith [hx]
+  · dsimp [Injective]
+    push_neg
+    use 1, 0
+    constructor <;> numbers
 
 example : ∀ (f : ℤ → ℤ), Surjective f → Surjective (fun x ↦ 2 * f x) := by
   sorry
