@@ -317,7 +317,20 @@ example : ¬ Surjective l := by
   cases a <;> exhaust
 
 example (f : X → Y) : Injective f ↔ ∀ x1 x2 : X, x1 ≠ x2 → f x1 ≠ f x2 := by
-  sorry
+  constructor
+  · intro h
+    dsimp [Injective] at h
+    intro x1 x2 hx
+    intro heq
+    have := h heq
+    contradiction
+  · intro h
+    dsimp [Injective]
+    intro x1 x2 hx
+    by_cases hne : x1 = x2
+    · exact hne
+    · have := h x1 x2 hne
+      contradiction
 
 example : ∀ (f : ℚ → ℚ), Injective f → Injective (fun x ↦ f x + 1) := by
   sorry
