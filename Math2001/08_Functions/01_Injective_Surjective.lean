@@ -384,7 +384,14 @@ example : ∀ c : ℝ, Surjective (fun x ↦ c * x) := by
   sorry
 
 example : ¬ ∀ c : ℝ, Surjective (fun x ↦ c * x) := by
-  sorry
+  push_neg
+  use 0
+  dsimp [Surjective]
+  push_neg
+  use 1
+  intro a
+  rw [zero_mul]
+  numbers
 
 example {f : ℚ → ℚ} (hf : ∀ x y, x < y → f x < f y) : Injective f := by
   sorry
