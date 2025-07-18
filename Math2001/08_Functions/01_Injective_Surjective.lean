@@ -409,4 +409,12 @@ example {f : ℚ → ℚ} (hf : ∀ x y, x < y → f x < f y) : Injective f := b
 
 example {f : X → ℕ} {x0 : X} (h0 : f x0 = 0) {i : X → X}
     (hi : ∀ x, f (i x) = f x + 1) : Surjective f := by
-  sorry
+  dsimp [Surjective]
+  intro y
+  simple_induction y with k ih
+  · use x0
+    rw [h0]
+  · obtain ⟨t, ht⟩ := ih
+    use i t
+    rw [hi]
+    rw [ht]
