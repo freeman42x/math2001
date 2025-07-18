@@ -208,7 +208,21 @@ def e : Element → Element
   | air => water
 
 example : Bijective e := by
-  sorry
+  constructor
+  · dsimp [Injective]
+    intro x1 x2 h
+    cases x1 <;> cases x2 <;> exhaust
+  · dsimp [Surjective]
+    intro b
+    cases b
+    · use earth
+      exhaust
+    · use air
+      exhaust
+    · use fire
+      exhaust
+    · use water
+      exhaust
 
 example : ¬ Bijective e := by
   sorry
