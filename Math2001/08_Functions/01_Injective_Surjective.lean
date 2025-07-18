@@ -333,7 +333,11 @@ example (f : X → Y) : Injective f ↔ ∀ x1 x2 : X, x1 ≠ x2 → f x1 ≠ f 
       contradiction
 
 example : ∀ (f : ℚ → ℚ), Injective f → Injective (fun x ↦ f x + 1) := by
-  sorry
+  intro f h
+  dsimp [Injective] at *
+  intro x1 x2 hx
+  apply h
+  addarith [hx]
 
 example : ¬ ∀ (f : ℚ → ℚ), Injective f → Injective (fun x ↦ f x + 1) := by
   sorry
