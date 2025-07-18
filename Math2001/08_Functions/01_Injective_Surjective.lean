@@ -394,7 +394,18 @@ example : ¬ ∀ c : ℝ, Surjective (fun x ↦ c * x) := by
   numbers
 
 example {f : ℚ → ℚ} (hf : ∀ x y, x < y → f x < f y) : Injective f := by
-  sorry
+  dsimp [Injective]
+  intro x1 x2 hx
+  obtain h1 | h2 | h3 := lt_trichotomy x1 x2
+  · have h4 := hf x1 x2 h1
+    rw [hx] at h4
+    have := ne_of_lt h4
+    contradiction
+  · exact h2
+  · have h4 := hf x2 x1 h3
+    rw [hx] at h4
+    have := ne_of_lt h4
+    contradiction
 
 example {f : X → ℕ} {x0 : X} (h0 : f x0 = 0) {i : X → X}
     (hi : ∀ x, f (i x) = f x + 1) : Surjective f := by
