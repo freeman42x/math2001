@@ -172,7 +172,14 @@ example {f : X → Y} (hf : Injective f) {g : Y → Z} (hg : Injective g) :
 
 example {f : X → Y} (hf : Surjective f) {g : Y → Z} (hg : Surjective g) :
     Surjective (g ∘ f) := by
-  sorry
+  intro z
+  obtain ⟨y, hy⟩ := hg z
+  obtain ⟨x, hx⟩ := hf y
+  use x
+  calc
+    (g ∘ f) x = g (f x) := by rfl
+    _ = g y := by rw [hx]
+    _ = z := by rw [hy]
 
 example {f : X → Y} (hf : Surjective f) : ∃ g : Y → X, f ∘ g = id := by
   sorry
