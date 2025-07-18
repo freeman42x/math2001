@@ -131,10 +131,10 @@ def b : Humour → Humour
   | sanguine => sanguine
 
 def c : Humour → Humour
-  | melancholic => sorry
-  | choleric => sorry
-  | phlegmatic => sorry
-  | sanguine => sorry
+  | melancholic => sanguine
+  | choleric => phlegmatic
+  | phlegmatic => melancholic
+  | sanguine => phlegmatic
 
 example : b ∘ a = c := by
   ext x
@@ -143,10 +143,24 @@ example : b ∘ a = c := by
 
 def u (x : ℝ) : ℝ := 5 * x + 1
 
-noncomputable def v (x : ℝ) : ℝ := sorry
+noncomputable def v (x : ℝ) : ℝ := (x - 1) / 5
 
 example : Inverse u v := by
-  sorry
+  constructor
+  · ext x
+    calc
+      (v ∘ u) x
+        = v (u x) := by rfl
+      _ = ((5 * x + 1) - 1) / 5 := by rfl
+      _ = x := by ring
+      _ = id x := by rfl
+  · ext x
+    calc
+      (u ∘ v) x
+        = u (v x) := by rfl
+      _ = 5 * ((x - 1) / 5) + 1 := by rfl
+      _ = x := by ring
+      _ = id x := by rfl
 
 example {f : X → Y} (hf : Injective f) {g : Y → Z} (hg : Injective g) :
     Injective (g ∘ f) := by
