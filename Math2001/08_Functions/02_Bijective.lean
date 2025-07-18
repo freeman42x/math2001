@@ -127,8 +127,18 @@ example : ∀ f : Celestial → Celestial, Injective f → Bijective f := by
       apply h_sun
     · use moon
       apply h_moon
-  | moon, sun => sorry
-  | moon, moon => sorry
+  | moon, sun =>
+    intro y
+    cases y
+    · use moon
+      rw [h_moon]
+    · use sun
+      rw [h_sun]
+  | moon, moon =>
+    have : sun = moon
+    · apply hf
+      rw [h_sun, h_moon]
+    contradiction
 
 
 example : ¬ ∀ f : ℕ → ℕ, Injective f → Bijective f := by
