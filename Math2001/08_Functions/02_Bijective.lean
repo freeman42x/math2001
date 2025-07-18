@@ -184,7 +184,13 @@ example : Bijective (fun (x : ℝ) ↦ x ^ 2 + 2 * x) := by
   sorry
 
 example : ¬ Bijective (fun (x : ℝ) ↦ x ^ 2 + 2 * x) := by
-  sorry
+  dsimp [Bijective]
+  push_neg
+  left
+  dsimp [Injective]
+  push_neg
+  use -2, 0
+  constructor <;> numbers
 
 inductive Element
   | fire
