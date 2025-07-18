@@ -274,10 +274,20 @@ example : Injective h := by
   sorry
 
 example : ¬ Injective h := by
-  sorry
+  dsimp [Injective]
+  push_neg
+  use athos
+  use aramis
+  exhaust
 
 example : Surjective h := by
-  sorry
+  dsimp [Surjective]
+  intro y
+  cases y
+  · use porthos
+    exhaust
+  · use athos
+    exhaust
 
 example : ¬ Surjective h := by
   sorry
