@@ -193,4 +193,11 @@ example {f : X → Y} {g : Y → X} (h : Inverse f g) : Inverse g f := by
 
 example {f : X → Y} {g1 g2 : Y → X} (h1 : Inverse f g1) (h2 : Inverse f g2) :
     g1 = g2 := by
-  sorry
+  obtain ⟨h11, h12⟩ := h1
+  obtain ⟨h21, h22⟩ := h2
+  calc
+   g1 = g1 ∘ id := by rfl
+   _ = g1 ∘ (f ∘ g2) := by rw [h22]
+   _ = (g1 ∘ f) ∘ g2 := by rfl
+   _ = id ∘ g2 := by rw [h11]
+   _ = g2 := by rfl
