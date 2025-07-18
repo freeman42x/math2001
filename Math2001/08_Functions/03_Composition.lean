@@ -188,7 +188,8 @@ example {f : X → Y} (hf : Surjective f) : ∃ g : Y → X, f ∘ g = id := by
   exact hg x
 
 example {f : X → Y} {g : Y → X} (h : Inverse f g) : Inverse g f := by
-  sorry
+  obtain ⟨h1, h2⟩ := h
+  exact ⟨h2, h1⟩
 
 example {f : X → Y} {g1 g2 : Y → X} (h1 : Inverse f g1) (h2 : Inverse f g2) :
     g1 = g2 := by
