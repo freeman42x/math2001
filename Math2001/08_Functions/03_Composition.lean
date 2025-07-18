@@ -164,7 +164,11 @@ example : Inverse u v := by
 
 example {f : X → Y} (hf : Injective f) {g : Y → Z} (hg : Injective g) :
     Injective (g ∘ f) := by
-  sorry
+  dsimp [Injective]
+  intro x1 x2 h
+  apply hf
+  apply hg
+  exact h
 
 example {f : X → Y} (hf : Surjective f) {g : Y → Z} (hg : Surjective g) :
     Surjective (g ∘ f) := by
