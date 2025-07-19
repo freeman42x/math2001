@@ -232,7 +232,12 @@ example : Bijective (fun ((r, s) : ℚ × ℚ) ↦ (s, r - s)) := by
     ring
 
 example : ¬ Injective (fun ((x, y) : ℤ × ℤ) ↦ x - 2 * y - 1) := by
-  sorry
+  dsimp [Injective]
+  push_neg
+  use (0, 0), (4, 2)
+  dsimp
+  constructor <;> numbers
+
 example : Surjective (fun ((x, y) : ℤ × ℤ) ↦ x - 2 * y - 1) := by
   sorry
 
