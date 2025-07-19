@@ -230,7 +230,24 @@ example : {m : ℤ | m ≥ 10} ⊈ {n : ℤ | n ^ 3 - 7 * n ^ 2 ≥ 4 * n} := by
 
 namespace Int
 example : {n : ℤ | Even n} = {a : ℤ | a ≡ 6 [ZMOD 2]} := by
-  sorry
+  ext x
+  dsimp
+  constructor
+  · intro h
+    dsimp [Even] at h
+    obtain ⟨k, hk⟩ := h
+    use k - 3
+    calc
+      x - 6
+        = 2 * k - 6 := by rw [hk]
+      _ = 2 * (k - 3) := by ring
+  · intro h
+    dsimp [Even]
+    obtain ⟨k, hk⟩ := h
+    use k + 3
+    calc
+      x = 2 * k + 6 := by addarith [hk]
+      _ = 2 * (k + 3) := by ring
 
 example : {n : ℤ | Even n} ≠ {a : ℤ | a ≡ 6 [ZMOD 2]} := by
   sorry
