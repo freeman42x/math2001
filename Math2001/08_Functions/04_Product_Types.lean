@@ -271,7 +271,11 @@ example : Surjective (fun ((a, b) : ℚ × ℕ) ↦ a ^ b) := by
 
 example : ¬ Injective
     (fun ((x, y, z) : ℝ × ℝ × ℝ) ↦ (x + y + z, x + 2 * y + 3 * z)) := by
-  sorry
+  dsimp [Injective]
+  push_neg
+  use (0, 0, 0), (1, -2, 1)
+  dsimp
+  constructor <;> numbers
 
 example : Injective (fun ((x, y) : ℝ × ℝ) ↦ (x + y, x + 2 * y, x + 3 * y)) := by
   sorry
