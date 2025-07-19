@@ -112,7 +112,10 @@ example : Surjective (fun ((m, n) : ℤ × ℤ) ↦ 5 * m + 8 * n) := by
 
 
 example : ¬ Injective (fun ((m, n) : ℤ × ℤ) ↦ 5 * m + 10 * n) := by
-  sorry
+  dsimp [Injective]
+  push_neg
+  use (0, 0), (10, -5)
+  constructor <;> numbers
 
 example : ¬ Surjective (fun ((m, n) : ℤ × ℤ) ↦ 5 * m + 10 * n) := by
   dsimp [Surjective]
@@ -218,7 +221,15 @@ example : Bijective p := by
 
 example : Bijective (fun ((r, s) : ℚ × ℚ) ↦ (s, r - s)) := by
   rw [bijective_iff_exists_inverse]
-  sorry
+  dsimp [Inverse]
+  use fun (u, v) ↦ (u + v, u)
+  constructor
+  · ext ⟨r, s⟩
+    dsimp
+    ring
+  · ext ⟨u, v⟩
+    dsimp
+    ring
 
 example : ¬ Injective (fun ((x, y) : ℤ × ℤ) ↦ x - 2 * y - 1) := by
   sorry
