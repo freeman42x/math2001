@@ -189,7 +189,14 @@ example : {a : ℕ | 5 ∣ a} ⊆ {x : ℕ | 20 ∣ x} := by
   sorry
 
 example : {a : ℕ | 5 ∣ a} ⊈ {x : ℕ | 20 ∣ x} := by
-  sorry
+  dsimp [Set.subset_def]
+  push_neg
+  use 5
+  constructor
+  · rfl
+  · apply Nat.not_dvd_of_exists_lt_and_lt
+    use 0
+    constructor <;> numbers
 
 example : {r : ℤ | 3 ∣ r} ⊆ {s : ℤ | 0 ≤ s} := by
   sorry
