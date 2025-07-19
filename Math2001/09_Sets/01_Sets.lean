@@ -308,7 +308,17 @@ example : {1, 2, 3} = {1, 2} := by
   sorry
 
 example : {1, 2, 3} ≠ {1, 2} := by
-  sorry
+  ext
+  push_neg
+  dsimp
+  use 3
+  left
+  constructor
+  · right
+    right
+    rfl
+  · push_neg
+    constructor <;> numbers
 
 example : {x : ℝ | x ^ 2 + 3 * x + 2 = 0} = {-1, -2} := by
   sorry
