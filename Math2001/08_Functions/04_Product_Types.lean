@@ -278,7 +278,18 @@ example : ¬ Injective
   constructor <;> numbers
 
 example : Injective (fun ((x, y) : ℝ × ℝ) ↦ (x + y, x + 2 * y, x + 3 * y)) := by
-  sorry
+  dsimp [Injective]
+  intro (a, b) (c, d) h
+  dsimp at h
+  obtain ⟨h1, h2, h3⟩ := h
+  have h4: b = d := by
+   calc
+      b = (a + 2 * b) - (a + b) := by ring
+      _ = (c + 2 * d) - (c + d) := by rw [h1, h2]
+      _ = d := by ring
+  constructor
+  · addarith [h1, h4]
+  · exact h4
 
 def h : ℝ × ℝ × ℝ → ℝ × ℝ × ℝ
   | (x, y, z) => (y, z, x)
