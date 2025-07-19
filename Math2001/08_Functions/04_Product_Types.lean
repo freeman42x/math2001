@@ -256,7 +256,11 @@ example : ¬ Surjective (fun ((x, y) : ℚ × ℚ) ↦ x ^ 2 + y ^ 2) := by
     _ ≤ x ^ 2 + y ^ 2 := by extra
 
 example : Surjective (fun ((x, y) : ℚ × ℚ) ↦ x ^ 2 - y ^ 2) := by
-  sorry
+  dsimp [Surjective]
+  intro z
+  use ((z + 1) / 2, (z - 1) / 2)
+  dsimp
+  ring
 
 example : Surjective (fun ((a, b) : ℚ × ℕ) ↦ a ^ b) := by
   sorry
