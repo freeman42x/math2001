@@ -129,10 +129,14 @@ example : 4 ∈ {a : ℚ | a < 3} := by
   sorry
 
 example : 4 ∉ {a : ℚ | a < 3} := by
-  sorry
+  dsimp
+  intro h
+  numbers at h
 
 example : 6 ∈ {n : ℕ | n ∣ 42} := by
-  sorry
+  dsimp
+  use 7
+  numbers
 
 example : 6 ∉ {n : ℕ | n ∣ 42} := by
   sorry
@@ -142,10 +146,16 @@ example : 8 ∈ {k : ℤ | 5 ∣ k} := by
   sorry
 
 example : 8 ∉ {k : ℤ | 5 ∣ k} := by
-  sorry
+  dsimp
+  apply Int.not_dvd_of_exists_lt_and_lt
+  use 1
+  constructor <;> numbers
 
 example : 11 ∈ {n : ℕ | Odd n} := by
-  sorry
+  dsimp
+  dsimp [Odd]
+  use 5
+  ring
 
 example : 11 ∉ {n : ℕ | Odd n} := by
   sorry
