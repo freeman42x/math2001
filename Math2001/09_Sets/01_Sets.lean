@@ -321,4 +321,27 @@ example : {1, 2, 3} ≠ {1, 2} := by
     constructor <;> numbers
 
 example : {x : ℝ | x ^ 2 + 3 * x + 2 = 0} = {-1, -2} := by
-  sorry
+  ext x
+  dsimp
+  constructor
+  · intro h
+    have hx :=
+    calc
+      (x + 1) * (x + 2) = x ^ 2 + 3 * x + 2  := by ring
+      _ = 0 := by rw [h]
+    rw [mul_eq_zero] at hx
+    obtain hx | hx := hx
+    · left
+      addarith [hx]
+    · right
+      addarith [hx]
+  · intro h
+    obtain h | h := h
+    · calc
+        x ^ 2 + 3 * x + 2
+          = (-1) ^ 2 + 3 * (-1) + 2 := by rw [h]
+        _ = 0 := by ring
+    · calc
+        x ^ 2 + 3 * x + 2
+          = (-2) ^ 2 + 3 * (-2) + 2 := by rw [h]
+        _ = 0 := by ring
