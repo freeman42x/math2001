@@ -246,7 +246,14 @@ example : Surjective (fun ((x, y) : ℤ × ℤ) ↦ x - 2 * y - 1) := by
   ring
 
 example : ¬ Surjective (fun ((x, y) : ℚ × ℚ) ↦ x ^ 2 + y ^ 2) := by
-  sorry
+  dsimp [Surjective]
+  push_neg
+  use -1
+  intro (x, y)
+  apply ne_of_gt
+  calc
+    -1 < 0 := by numbers
+    _ ≤ x ^ 2 + y ^ 2 := by extra
 
 example : Surjective (fun ((x, y) : ℚ × ℚ) ↦ x ^ 2 - y ^ 2) := by
   sorry
