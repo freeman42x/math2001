@@ -282,7 +282,23 @@ example : {k : ℤ | 8 ∣ 6 * k} ≠ {l : ℤ | 8 ∣ l} := by
     constructor <;> numbers
 
 example : {k : ℤ | 7 ∣ 9 * k} = {l : ℤ | 7 ∣ l} := by
-  sorry
+  ext x
+  dsimp
+  constructor
+  · intro h
+    obtain ⟨k, hk⟩ := h
+    use 4 * x - 3 * k
+    calc
+      x = 28 * x - 3 * (9 * x) := by ring
+      _ = 28 * x - 3 * (7 * k) := by rw [hk]
+      _ = 7 * (4 * x - 3 * k) := by ring
+  · intro h
+    obtain ⟨k, hk⟩ := h
+    use 9 * k
+    calc
+      9 * x
+        = 9 * (7 * k) := by rw [hk]
+      _ = 7 * (9 * k) := by ring
 
 example : {k : ℤ | 7 ∣ 9 * k} ≠ {l : ℤ | 7 ∣ l} := by
   sorry
