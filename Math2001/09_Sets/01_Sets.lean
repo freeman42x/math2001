@@ -269,7 +269,17 @@ example : {k : ℤ | 8 ∣ 6 * k} = {l : ℤ | 8 ∣ l} := by
   sorry
 
 example : {k : ℤ | 8 ∣ 6 * k} ≠ {l : ℤ | 8 ∣ l} := by
-  sorry
+  ext
+  push_neg
+  dsimp
+  use 4
+  left
+  constructor
+  · use 3
+    numbers
+  · apply Int.not_dvd_of_exists_lt_and_lt
+    use 0
+    constructor <;> numbers
 
 example : {k : ℤ | 7 ∣ 9 * k} = {l : ℤ | 7 ∣ l} := by
   sorry
