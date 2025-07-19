@@ -258,7 +258,12 @@ example : {t : ℝ | t ^ 2 - 5 * t + 4 = 0} = {4} := by
   sorry
 
 example : {t : ℝ | t ^ 2 - 5 * t + 4 = 0} ≠ {4} := by
-  sorry
+  ext
+  dsimp
+  push_neg
+  use 1
+  left
+  constructor <;> numbers
 
 example : {k : ℤ | 8 ∣ 6 * k} = {l : ℤ | 8 ∣ l} := by
   sorry
