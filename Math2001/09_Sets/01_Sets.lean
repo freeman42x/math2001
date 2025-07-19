@@ -202,10 +202,27 @@ example : {r : ℤ | 3 ∣ r} ⊆ {s : ℤ | 0 ≤ s} := by
   sorry
 
 example : {r : ℤ | 3 ∣ r} ⊈ {s : ℤ | 0 ≤ s} := by
-  sorry
+  dsimp [Set.subset_def]
+  push_neg
+  use -3
+  constructor
+  · use -1
+    numbers
+  · numbers
 
 example : {m : ℤ | m ≥ 10} ⊆ {n : ℤ | n ^ 3 - 7 * n ^ 2 ≥ 4 * n} := by
-  sorry
+  dsimp [Set.subset_def]
+  intro m hm
+  calc
+    m ^ 3 - 7 * m ^ 2 = m * m * (m - 7) := by ring
+    _ ≥ m * m * (10 - 7) := by rel [hm]
+    _ ≥ m * 10 * (10 - 7) := by rel [hm]
+    _ = m * 10 * 3 := by ring
+    _ = 30 * m := by ring
+    _ = 4 * m + 26 * m := by ring
+    _ ≥ 4 * m + 26 * 10 := by rel [hm]
+    _ = 4 * m + 260 := by ring
+    _ ≥ 4 * m := by extra
 
 example : {m : ℤ | m ≥ 10} ⊈ {n : ℤ | n ^ 3 - 7 * n ^ 2 ≥ 4 * n} := by
   sorry
