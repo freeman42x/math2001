@@ -162,14 +162,24 @@ example : 11 ∉ {n : ℕ | Odd n} := by
 
 
 example : -3 ∈ {x : ℝ | ∀ y : ℝ, x ≤ y ^ 2} := by
-  sorry
+  dsimp
+  intro y
+  calc
+    -3 ≤ 0 := by numbers
+     _ ≤ y ^ 2 := by extra
 
 example : -3 ∉ {x : ℝ | ∀ y : ℝ, x ≤ y ^ 2} := by
   sorry
 
 
 example : {a : ℕ | 20 ∣ a} ⊆ {x : ℕ | 5 ∣ x} := by
-  sorry
+  dsimp [Set.subset_def]
+  intro x h
+  obtain ⟨l, hl⟩ := h
+  use 4 * l
+  calc
+    x = 20 * l := by rw [hl]
+    _ = 5 * (4 * l) := by ring
 
 example : {a : ℕ | 20 ∣ a} ⊈ {x : ℕ | 5 ∣ x} := by
   sorry
