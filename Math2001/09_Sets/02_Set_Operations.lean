@@ -155,7 +155,22 @@ example : {3, 4, 5}ᶜ ∩ {1, 3, 5, 7, 9} = { 1, 7, 9 } := by
 
 example : {r : ℤ | r ≡ 7 [ZMOD 10] }
     ⊆ {s : ℤ | s ≡ 1 [ZMOD 2]} ∩ {t : ℤ | t ≡ 2 [ZMOD 5]} := by
-  sorry
+  dsimp [Set.subset_def]
+  intro x h
+  obtain ⟨k, hk⟩ := h
+  constructor
+  · use 5 * k + 3
+    calc
+      x - 1
+        = (x - 7) + 6 := by ring
+      _ = 10 * k + 6 := by rw [hk]
+      _ = 2 * (5 * k + 3) := by ring
+  · use 2 * k + 1
+    calc
+      x - 2
+        = (x - 7) + 5 := by ring
+      _ = 10 * k + 5 := by rw [hk]
+      _ = 5 * (2 * k + 1) := by ring
 
 example : {n : ℤ | 5 ∣ n} ∩ {n : ℤ | 8 ∣ n} ⊆ {n : ℤ | 40 ∣ n} := by
   sorry
