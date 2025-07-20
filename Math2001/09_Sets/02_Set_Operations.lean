@@ -32,9 +32,23 @@ example : {1, 2} ∪ {2, 4} = {1, 2, 4} := by
       left
       apply h
   -- and much, much more
-    · sorry
-    · sorry
-  · sorry
+    · right
+      left
+      apply h
+    · right
+      right
+      apply h
+  · intro h
+    obtain h | h | h := h
+    · left
+      left
+      apply h
+    · left
+      right
+      apply h
+    · right
+      right
+      apply h
 
 
 example : {2, 1} ∪ {2, 4} = {1, 2, 4} := by
