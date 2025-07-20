@@ -173,7 +173,17 @@ example : {r : ℤ | r ≡ 7 [ZMOD 10] }
       _ = 5 * (2 * k + 1) := by ring
 
 example : {n : ℤ | 5 ∣ n} ∩ {n : ℤ | 8 ∣ n} ⊆ {n : ℤ | 40 ∣ n} := by
-  sorry
+  dsimp [Set.subset_def]
+  intro x h
+  obtain ⟨h1, h2⟩ := h
+  obtain ⟨h11, h12⟩ := h1
+  obtain ⟨h21, h22⟩ := h2
+  use 5 * h21 - 3 * h11
+  calc
+    x = 25 * x - 24 * x := by ring
+    _ = 25 * (8 * h21) - 24 * x := by rw [h22]
+    _ = 25 * (8 * h21) - 24 * (5 * h11) := by rw [h12]
+    _ = 40 * (5 * h21 - 3 * h11) := by ring
 
 example :
     {n : ℤ | 3 ∣ n} ∪ {n : ℤ | 2 ∣ n} ⊆ {n : ℤ | n ^ 2 ≡ 1 [ZMOD 6]}ᶜ := by
