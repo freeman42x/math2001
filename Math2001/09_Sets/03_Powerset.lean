@@ -79,7 +79,20 @@ example : ¬ ∃ f : X → Set X, Surjective f := by
 def r (s : Set ℕ) : Set ℕ := s ∪ {3}
 
 example : ¬ Injective r := by
-  sorry
+  dsimp [Injective]
+  push_neg
+  use ∅, {3}
+  dsimp [r]
+  constructor
+  · ext x
+    dsimp
+    exhaust
+  · ext
+    dsimp
+    push_neg
+    use 3
+    right
+    exhaust
 
 namespace Int
 
