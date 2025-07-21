@@ -171,13 +171,32 @@ end
 
 
 example : ¬ Symmetric ((·:ℝ) < ·) := by
-  sorry
+  dsimp [Symmetric]
+  push_neg
+  use 0, 1
+  constructor <;> numbers
 
 section
 local infix:50 "∼" => fun (x y : ℤ) ↦ x ≡ y [ZMOD 2]
 
 example : ¬ AntiSymmetric (· ∼ ·) := by
-  sorry
+  dsimp [AntiSymmetric]
+  push_neg
+  use 2, 4
+  constructor
+  · calc
+      2 = 0 + 2 * 1 := by ring
+      _ ≡ 0 [ZMOD 2] := by extra
+      _ ≡ 0 + 2 * 2 [ZMOD 2] := by extra
+      _ ≡ 4 [ZMOD 2] := by numbers
+  · constructor
+    · calc
+        4 = 0 + 2 * 2 := by ring
+        _ ≡ 0 [ZMOD 2] := by extra
+        _ ≡ 0 + 2 * 1 [ZMOD 2]:= by extra
+        _ ≡ 2 [ZMOD 2] := by numbers
+    · numbers
+
 
 end
 
