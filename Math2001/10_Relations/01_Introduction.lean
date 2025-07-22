@@ -236,10 +236,15 @@ example : Reflexive (· ∼ ·) := by
   sorry
 
 example : ¬ Reflexive (· ∼ ·) := by
-  sorry
+  dsimp [Reflexive]
+  push_neg
+  use beth
+  exhaust
 
 example : Symmetric (· ∼ ·) := by
-  sorry
+  dsimp [Symmetric]
+  intro x y h
+  cases x <;> cases y <;> exhaust
 
 example : ¬ Symmetric (· ∼ ·) := by
   sorry
