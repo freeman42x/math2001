@@ -253,13 +253,19 @@ example : AntiSymmetric (· ∼ ·) := by
   sorry
 
 example : ¬ AntiSymmetric (· ∼ ·) := by
-  sorry
+  dsimp [AntiSymmetric]
+  push_neg
+  use beth, meg
+  exhaust
 
 example : Transitive (· ∼ ·) := by
   sorry
 
 example : ¬ Transitive (· ∼ ·) := by
-  sorry
+  dsimp [Transitive]
+  push_neg
+  use jo, meg, amy
+  exhaust
 
 end
 
