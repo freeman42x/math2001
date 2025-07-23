@@ -277,16 +277,33 @@ example : Reflexive (· ∼ ·) := by
   sorry
 
 example : ¬ Reflexive (· ∼ ·) := by
-  sorry
+  dsimp [Reflexive]
+  push_neg
+  use 0
+  numbers
 
 example : Symmetric (· ∼ ·) := by
   sorry
 
 example : ¬ Symmetric (· ∼ ·) := by
-  sorry
+  dsimp [Symmetric]
+  push_neg
+  use 0, 1
+  constructor <;> numbers
 
 example : AntiSymmetric (· ∼ ·) := by
-  sorry
+  dsimp [AntiSymmetric]
+  intro x y h1 h2
+  have h3 : x ≡ x + 1 + 1 [ZMOD 5] := by
+    calc
+      x ≡ y + 1 [ZMOD 5] := by rel [h2]
+      _ ≡ (x + 1) + 1 [ZMOD 5] := by rel [h1]
+  have h4 := by
+    calc
+      0 = x - x := by ring
+      _ ≡ (x + 1 + 1) - x [ZMOD 5] := by rel [h3]
+      _ = 2 := by ring
+  numbers at h4
 
 example : ¬ AntiSymmetric (· ∼ ·) := by
   sorry
@@ -295,7 +312,12 @@ example : Transitive (· ∼ ·) := by
   sorry
 
 example : ¬ Transitive (· ∼ ·) := by
-  sorry
+  dsimp [Transitive]
+  push_neg
+  use 0, 1, 2
+  constructor
+  · numbers
+  · constructor <;> numbers
 
 end
 
