@@ -434,7 +434,11 @@ section
 local infix:50 "≺" => fun ((x1, y1) : ℝ × ℝ) (x2, y2) ↦ (x1 ≤ x2 ∧ y1 ≤ y2)
 
 example : Reflexive (· ≺ ·) := by
-  sorry
+  dsimp [Reflexive]
+  intro x
+  constructor
+  · exact le_refl x.1
+  · exact le_refl x.2
 
 example : ¬ Reflexive (· ≺ ·) := by
   sorry
@@ -443,16 +447,44 @@ example : Symmetric (· ≺ ·) := by
   sorry
 
 example : ¬ Symmetric (· ≺ ·) := by
-  sorry
+  dsimp [Symmetric]
+  push_neg
+  use (1, 1), (2, 2)
+  constructor
+  · constructor
+    · numbers
+    · numbers
+  · left
+    numbers
 
 example : AntiSymmetric (· ≺ ·) := by
-  sorry
+  dsimp [AntiSymmetric]
+  intro x y hxy hyx
+  obtain ⟨hxy', hxy''⟩ := hxy
+  obtain ⟨hyx', hyx''⟩ := hyx
+  constructor
+  · apply le_antisymm
+    · exact hxy'
+    · exact hyx'
+  · apply le_antisymm
+    · exact hxy''
+    · exact hyx''
 
 example : ¬ AntiSymmetric (· ≺ ·) := by
   sorry
 
 example : Transitive (· ≺ ·) := by
-  sorry
+  dsimp [Transitive]
+  intro x y z hxy hyz
+  obtain ⟨hxy', hxy''⟩ := hxy
+  obtain ⟨hyz', hyz''⟩ := hyz
+  constructor
+  · apply le_trans
+    · exact hxy'
+    · exact hyz'
+  · apply le_trans
+    · exact hxy''
+    · exact hyz''
 
 example : ¬ Transitive (· ≺ ·) := by
   sorry
